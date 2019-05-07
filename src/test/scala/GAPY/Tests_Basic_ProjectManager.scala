@@ -15,7 +15,7 @@ class Test_Basic {
         val http = Http(gns3_server_url + gns3_server_port + "/v2/projects/")
         val response: HttpResponse[String] = http.asString
 
-        assert(response === "[]", "No project should exist. Should had [] but had " + response)
+        assert(response.body === "[]", "No project should exist. Should had [] but had " + response)
     }
 
     @Test
