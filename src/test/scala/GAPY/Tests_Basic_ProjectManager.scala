@@ -2,7 +2,7 @@ package GAPY
 
 import org.junit._
 import Assert._
-import GAPY.ProjectManager._
+import GAPY._
 
 @Test
 class Test_Basic {
