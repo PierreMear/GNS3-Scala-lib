@@ -2,7 +2,7 @@ package GAPY
 
 import org.junit._
 import Assert._
-import GNS3-Scala-lib.src.main.scala.GAPY.ProjectManager._
+import GAPY.ProjectManager._
 
 @Test
 class Test_Basic {
