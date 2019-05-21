@@ -1,5 +1,7 @@
 package GAPY 
 
+import topologies.Topology
+
 import scalaj.http._
 import scala.collection.mutable.Map
 import org.json.simple._    
@@ -50,6 +52,16 @@ class ProjectManager(var ProjectId: String, var serverAddress:String) {
       val obj=JSONValue.parse(returned); 
       val link:JSONObject=obj.asInstanceOf[JSONObject];
       linksId += (new Tuple2(name1,name2) -> link.get("link_id").asInstanceOf[String])
+      this
+    }
+    
+    /**
+     * addTopology : create a topology
+     * @param topology : the topology to create
+     * @return ProjectManager to be fluent
+     */
+    def addTopology(topology:Topology): ProjectManager = {
+      topology.create(this)
       this
     }
     
