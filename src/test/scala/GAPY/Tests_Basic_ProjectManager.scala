@@ -35,8 +35,8 @@ class Test_Basic {
 
     @Test
     def testCreateEmptyProject() = {
-      GNS3_Manager projEmptyTest = new GNS3_Manager(returnServerAddress())
-      ProjectManager p = projEmptyTest.createProject("projEmpty")
+      val projEmptyTest = new GNS3_Manager(returnServerAddress())
+      val p = projEmptyTest.createProject("projEmpty")
       
       val check = checkProjectsAPI()
       val proj_id = p.ProjectId
