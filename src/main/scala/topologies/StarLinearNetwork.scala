@@ -9,7 +9,7 @@ class StarLinearNetwork(val center:Node, val devices:List[Node]) extends Topolog
    .addTopology(new StarNetwork(center,devices))
    for(i <- 1 until devices.length){
       val node:Node = devices(i)
-      projectManager.addLink(devices(i-1), node, 2, 3)
+      projectManager.addLink(SimpleLink(devices(i-1), node, 2, 3))
     }
   }
 }
