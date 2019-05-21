@@ -6,6 +6,21 @@ import scalaj.http._
 
 @Test
 class Test_Basic {
+  
+    def returnServerAddress(): String = {
+      return "http://148.60.11.201:3080"
+    }
+    
+    def returnUrlAPI(): String = {
+      return returnServerAddress() + "/v2/projects"
+    }
+    
+    def checkProjectsAPI(): String = {
+      val http = Http(returnUrlAPI())
+      val response: HttpResponse[String] = http.asString
+      
+      return response.body
+    }
 
     @Test
     def testNoProject() = {
@@ -19,23 +34,24 @@ class Test_Basic {
     }
 
     @Test
-    def testNodesBasic() = {
+    def testCreateEmptyProject() = {
+      val projEmptyTest = new GNS3_Manager(returnServerAddress())
+      
+      val p = projEmptyTest.createProject("projEmpty")
+
+      
+      var check = checkProjectsAPI()
+      val proj_id = p.ProjectId
+      
+      assert(check != "[]", "The project 'projEmpty' should have been created")
+      
+      projEmptyTest.deleteProject(proj_id)
         
-        /*
-        id_project = ""
-        val p = new ProjectManager(id_project,"http://148.60.11.201:3080")
-        p.addNode("PC1", "vpcs", "local")
-        .addNode("PC2", "vpcs", "local")
-        .addNode("PC3", "vpcs", "local")
-        .addNode("PC4", "vpcs", "local")
+      check = checkProjectsAPI()
 
-        var returned = RESTCall("/v2/projects/" + id_project + "/nodes","GET")
+      assert(check == "[]", "The project 'projEmpty' should have been destroyed")
 
-
-        p.removeNode("PC1")
-        .removeNode("PC2")
-        .removeNode("PC3")
-        .removeNode("PC4")
-        */
+      
     }
+
 }
