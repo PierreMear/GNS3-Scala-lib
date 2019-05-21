@@ -11,8 +11,7 @@ class FullyConnectedNetwork(val devices:List[Node]) extends Topology{
       val node:Node = devices(i)
       projectManager.addNode(node)
       for(j <- 0 until addedDevices.length){
-        // TODO : The addLink function will be updated shorlty so this will have to be updated as well
-        projectManager.addLink(addedDevices(j),node, i, j)
+        projectManager.addLink(SimpleLink(addedDevices(j),node, i, j))
       }
       addedDevices = node :: addedDevices
     }
