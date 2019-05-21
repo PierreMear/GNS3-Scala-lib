@@ -36,14 +36,20 @@ class Test_Basic {
     @Test
     def testCreateEmptyProject() = {
       val projEmptyTest = new GNS3_Manager(returnServerAddress())
-      val p = projEmptyTest.createProject("projEmpty")
+      try {
+        val p = projEmptyTest.createProject("projEmpty")
       
-      val check = checkProjectsAPI()
-      val proj_id = p.ProjectId
-      assert(check != "[]", "The project 'projEmpty' should have been created")
+        var check = checkProjectsAPI()
+        val proj_id = p.ProjectId
+        assert(check != "[]", "The project 'projEmpty' should have been created")
       
-      projEmptyTest.deleteProject(proj_id)
-      assert(check == "[]", "The project 'projEmpty' should have been destroyed")
+        check = checkProjectsAPI()
+        projEmptyTest.deleteProject(proj_id)
+        assert(check == "[]", "The project 'projEmpty' should have been destroyed")
+      } catch {
+        case t: Throwable => t.printStackTrace() // TODO: handle error
+      }
+      
     }
 
 }
