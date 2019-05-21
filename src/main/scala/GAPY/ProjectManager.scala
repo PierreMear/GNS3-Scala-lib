@@ -27,7 +27,7 @@ class ProjectManager(var ProjectId: String, var serverAddress:String) {
      */
     def addNode(name:String, nodeType:String, computeId:String): ProjectManager = {
       val body = "{\"name\":\"%s\",\"node_type\":\"%s\",\"compute_id\":\"%s\"}".format(name,nodeType,computeId)
-      val returned = RESTCall("/v2/projects/" + ProjectId + "/nodes","POST",body)
+      val returned = RESTApi.post("/v2/projects/" + ProjectId + "/nodes",body,serverAddress)
       val obj=JSONValue.parse(returned); 
       val node:JSONObject=obj.asInstanceOf[JSONObject];
       nodesId += (name -> node.get("node_id").asInstanceOf[String])
@@ -48,7 +48,7 @@ class ProjectManager(var ProjectId: String, var serverAddress:String) {
       val node1 = "{\"adapter_number\":%s,\"node_id\":\"%s\",\"port_number\":%s}".format(adaptater1,nodesId.getOrElse(name1, ""),port1)
       val node2 = "{\"adapter_number\":%s,\"node_id\":\"%s\",\"port_number\":%s}".format(adaptater2,nodesId.getOrElse(name2, ""),port2)
       val body = "{\"nodes\":[%s,%s]}".format(node1,node2)
-      val returned = RESTCall("/v2/projects/" + ProjectId + "/links","POST",body)
+      val returned = RESTApi.post("/v2/projects/" + ProjectId + "/links",body,serverAddress)
       val obj=JSONValue.parse(returned); 
       val link:JSONObject=obj.asInstanceOf[JSONObject];
       linksId += (new Tuple2(name1,name2) -> link.get("link_id").asInstanceOf[String])
@@ -71,7 +71,7 @@ class ProjectManager(var ProjectId: String, var serverAddress:String) {
      * @return ProjectManager to be fluent
      */
     def removeNode(name:String): ProjectManager = {
-      var returned = RESTCall("/v2/projects/" + ProjectId + "/nodes/" + nodesId.getOrElse(name, ""),"DELETE","{}")
+      var returned = RESTApi.delete("/v2/projects/" + ProjectId + "/nodes/" + nodesId.getOrElse(name, ""),serverAddress)
       nodesId -= name
       this
     }
@@ -83,26 +83,9 @@ class ProjectManager(var ProjectId: String, var serverAddress:String) {
      * @return ProjectManager to be fluent
      */
     def removeLink(name1:String, name2:String): ProjectManager = {
-      var returned = RESTCall("/v2/projects/" + ProjectId + "/links/" + linksId.getOrElse(new Tuple2(name1,name2), ""),"DELETE","{}")
+      var returned = RESTApi.delete("/v2/projects/" + ProjectId + "/links/" + linksId.getOrElse(new Tuple2(name1,name2), ""),serverAddress)
       linksId -= new Tuple2(name1,name2)
       this
     }
-    
-    private def RESTCall(url:String, method:String, body:String): String = {
-        var http = Http(serverAddress + url)
-        method match {
-            case "GET" => {
-              val response: HttpResponse[String] = http.asString
-              return response.body
-            }
-            case "POST" => {
-              val response: HttpResponse[String] = http.postData(body).asString
-              return response.body
-            }
-            case "DELETE" => {
-              val response: HttpResponse[String] = http.method("delete").asString
-              return response.body
-            }
-        }
-    }  
+     
 }
