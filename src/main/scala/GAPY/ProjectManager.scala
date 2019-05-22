@@ -80,6 +80,9 @@ class ProjectManager(var ProjectId: String, var serverAddress:String) {
      * @return ProjectManager to be fluent
      */
     def removeNode(n:Node): ProjectManager = {
+      if(!nodesId.contains(n)){
+        throw NodeNotFoundException("Node not found : you wanted to remove an innexisting node : " + n)
+      }
       var returned = RESTApi.delete("/v2/projects/" + ProjectId + "/nodes/" + nodesId.getOrElse(n, ""),serverAddress)
       nodesId -= n
       this
@@ -92,7 +95,12 @@ class ProjectManager(var ProjectId: String, var serverAddress:String) {
      * @return ProjectManager to be fluent
      */
     def removeLink(link:Link): ProjectManager = {
-      var returned = RESTApi.delete("/v2/projects/" + ProjectId + "/links/" + linksId.getOrElse(link, ""),serverAddress)
+      val zelda:Link = RawLink(link.to,link.from,link.toPort,link.fromPort,link.toAdapter,link.fromAdapter)
+      if(!linksId.contains(link) && !linksId.contains(zelda)){
+        //throw LinkNotFoundException("Link not found : you wanted to remove an innexisting link : " + link)
+        throw NodeNotFoundException("Link not found : you wanted to remove an innexisting link : " + link)
+      }
+      var returned = RESTApi.delete("/v2/projects/" + ProjectId + "/links/" + linksId.getOrElse(link, linksId.getOrElse(zelda, "")),serverAddress)
       linksId -= link
       this
     }
@@ -103,6 +111,9 @@ class ProjectManager(var ProjectId: String, var serverAddress:String) {
      * @return ProjectManager to be fluent
      */
     def startNode(node:Node): ProjectManager = {
+      if(!nodesId.contains(node)){
+        throw NodeNotFoundException("Node not found : you wanted to remove an innexisting node : " + node)
+      }
       var returned = RESTApi.post("/v2/projects/" + ProjectId + "/nodes/" + nodesId.getOrElse(node, "") + "/start","{}",serverAddress)
       this
     }
@@ -113,6 +124,9 @@ class ProjectManager(var ProjectId: String, var serverAddress:String) {
      * @return ProjectManager to be fluent
      */
     def stopNode(node:Node): ProjectManager = {
+      if(!nodesId.contains(node)){
+        throw NodeNotFoundException("Node not found : you wanted to remove an innexisting node : " + node)
+      }
       var returned = RESTApi.post("/v2/projects/" + ProjectId + "/nodes/" + nodesId.getOrElse(node, "") + "/stop","{}",serverAddress)
       this
     }
