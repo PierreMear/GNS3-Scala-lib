@@ -22,13 +22,17 @@ object App {
     .addLink(SimpleLink(LocalVpcs("PC2"), LocalHub("LocalHub"), 0, 1))
     .addLink(SimpleLink(LocalVpcs("PC3"), LocalHub("LocalHub"), 0, 2))
     .addLink(SimpleLink(LocalVpcs("PC4"), LocalHub("LocalHub"), 0, 3))
+    .startNode(LocalVpcs("PC1"))
+    .startNode(LocalVpcs("PC2"))
+    .stopNode(LocalVpcs("PC1"))
+    .startAll()
     
-    val gnsManager:GNS3_Manager = new GNS3_Manager("http://localhost:3080")
+    /*val gnsManager:GNS3_Manager = new GNS3_Manager("http://localhost:3080")
     gnsManager
     .createProject("copied")
     .copyProject(p)
     .addTopology(new RingNetwork(List(LocalHub("copyLink"),LocalHub("copy1"),LocalHub("copy2"),LocalHub("copy3"),LocalHub("copy4"))))
-    .addLink(SimpleLink(LocalHub("LocalHub"),LocalHub("copyLink"),4,4))
+    .addLink(SimpleLink(LocalHub("LocalHub"),LocalHub("copyLink"),4,4))*/
   }
 
 }

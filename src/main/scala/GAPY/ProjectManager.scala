@@ -96,7 +96,7 @@ class ProjectManager(var ProjectId: String, var serverAddress:String) {
      * @return ProjectManager to be fluent
      */
     def startNode(node:Node): ProjectManager = {
-      var returned = RESTApi.post("/v2/projects/" + ProjectId + "/node/" + nodesId.getOrElse(node, "") + "/start","{}",serverAddress)
+      var returned = RESTApi.post("/v2/projects/" + ProjectId + "/nodes/" + nodesId.getOrElse(node, "") + "/start","{}",serverAddress)
       this
     }
     
@@ -106,7 +106,7 @@ class ProjectManager(var ProjectId: String, var serverAddress:String) {
      * @return ProjectManager to be fluent
      */
     def stopNode(node:Node): ProjectManager = {
-      var returned = RESTApi.post("/v2/projects/" + ProjectId + "/node/" + nodesId.getOrElse(node, "") + "/stop","{}",serverAddress)
+      var returned = RESTApi.post("/v2/projects/" + ProjectId + "/nodes/" + nodesId.getOrElse(node, "") + "/stop","{}",serverAddress)
       this
     }
     
