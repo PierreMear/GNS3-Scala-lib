@@ -7,6 +7,7 @@ import scala.collection.mutable.Map
 import org.json.simple._   
 
 import objectTypes._
+import GAPY.GNS3_Exceptions.NodeNotFoundException
 
 /**
  * Manager of a GNS3 project
@@ -47,6 +48,12 @@ class ProjectManager(var ProjectId: String, var serverAddress:String) {
      * @return ProjectManager to be fluent
      */
     def addLink(link:Link): ProjectManager = {
+      if(!nodesId.contains(link.from)){
+        throw NodeNotFoundException("Node not found : you wanted to link two nodes but one of them wasn't created : " + link.from)
+      }
+      if(!nodesId.contains(link.to)){
+        throw NodeNotFoundException("Node not found : you wanted to link two nodes but one of them wasn't created : " + link.to)
+      }
       val node1 = "{\"adapter_number\":%s,\"node_id\":\"%s\",\"port_number\":%s}".format(link.fromAdapter,nodesId.getOrElse(link.from, ""),link.fromPort)
       val node2 = "{\"adapter_number\":%s,\"node_id\":\"%s\",\"port_number\":%s}".format(link.toAdapter,nodesId.getOrElse(link.to, ""),link.toPort)
       val body = "{\"nodes\":[%s,%s]}".format(node1,node2)
