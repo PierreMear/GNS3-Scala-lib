@@ -89,6 +89,48 @@ class ProjectManager(var ProjectId: String, var serverAddress:String) {
       linksId -= link
       this
     }
+    
+    /**
+     * startNode : start the node
+     * @param node : node to start
+     * @return ProjectManager to be fluent
+     */
+    def startNode(node:Node): ProjectManager = {
+      var returned = RESTApi.post("/v2/projects/" + ProjectId + "/node/" + nodesId.getOrElse(node, "") + "/start","{}",serverAddress)
+      this
+    }
+    
+    /**
+     * stopNode : stop the node
+     * @param node : node to stop
+     * @return ProjectManager to be fluent
+     */
+    def stopNode(node:Node): ProjectManager = {
+      var returned = RESTApi.post("/v2/projects/" + ProjectId + "/node/" + nodesId.getOrElse(node, "") + "/stop","{}",serverAddress)
+      this
+    }
+    
+    /**
+     * startAll : start all the nodes of the project
+     * @return ProjectManager to be fluent
+     */
+    def startAll(): ProjectManager = {
+      for((node,id) <- nodesId){
+        startNode(node)
+      }
+      this
+    }
+    
+    /**
+     * stopAll : stop all the nodes of the project
+     * @return ProjectManager to be fluent
+     */
+    def stopAll(): ProjectManager = {
+      for((node,id) <- nodesId){
+        stopNode(node)
+      }
+      this
+    }
      
     /**
      * copyProject : copy the project given
