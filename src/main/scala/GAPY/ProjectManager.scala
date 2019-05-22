@@ -7,6 +7,7 @@ import scala.collection.mutable.Map
 import org.json.simple._   
 
 import objectTypes._
+import GAPY.GNS3_Exceptions.NodeNotFoundException
 
 /**
  * Manager of a GNS3 project
@@ -47,6 +48,12 @@ class ProjectManager(var ProjectId: String, var serverAddress:String) {
      * @return ProjectManager to be fluent
      */
     def addLink(link:Link): ProjectManager = {
+      if(!nodesId.contains(link.from)){
+        throw NodeNotFoundException("Node not found : you wanted to link two nodes but one of them wasn't created : " + link.from)
+      }
+      if(!nodesId.contains(link.to)){
+        throw NodeNotFoundException("Node not found : you wanted to link two nodes but one of them wasn't created : " + link.to)
+      }
       val node1 = "{\"adapter_number\":%s,\"node_id\":\"%s\",\"port_number\":%s}".format(link.fromAdapter,nodesId.getOrElse(link.from, ""),link.fromPort)
       val node2 = "{\"adapter_number\":%s,\"node_id\":\"%s\",\"port_number\":%s}".format(link.toAdapter,nodesId.getOrElse(link.to, ""),link.toPort)
       val body = "{\"nodes\":[%s,%s]}".format(node1,node2)
@@ -73,6 +80,9 @@ class ProjectManager(var ProjectId: String, var serverAddress:String) {
      * @return ProjectManager to be fluent
      */
     def removeNode(n:Node): ProjectManager = {
+      if(!nodesId.contains(n)){
+        throw NodeNotFoundException("Node not found : you wanted to remove an innexisting node : " + n)
+      }
       var returned = RESTApi.delete("/v2/projects/" + ProjectId + "/nodes/" + nodesId.getOrElse(n, ""),serverAddress)
       nodesId -= n
       this
@@ -85,7 +95,12 @@ class ProjectManager(var ProjectId: String, var serverAddress:String) {
      * @return ProjectManager to be fluent
      */
     def removeLink(link:Link): ProjectManager = {
-      var returned = RESTApi.delete("/v2/projects/" + ProjectId + "/links/" + linksId.getOrElse(link, ""),serverAddress)
+      val zelda:Link = RawLink(link.to,link.from,link.toPort,link.fromPort,link.toAdapter,link.fromAdapter)
+      if(!linksId.contains(link) && !linksId.contains(zelda)){
+        //throw LinkNotFoundException("Link not found : you wanted to remove an innexisting link : " + link)
+        throw NodeNotFoundException("Link not found : you wanted to remove an innexisting link : " + link)
+      }
+      var returned = RESTApi.delete("/v2/projects/" + ProjectId + "/links/" + linksId.getOrElse(link, linksId.getOrElse(zelda, "")),serverAddress)
       linksId -= link
       this
     }
@@ -96,6 +111,9 @@ class ProjectManager(var ProjectId: String, var serverAddress:String) {
      * @return ProjectManager to be fluent
      */
     def startNode(node:Node): ProjectManager = {
+      if(!nodesId.contains(node)){
+        throw NodeNotFoundException("Node not found : you wanted to remove an innexisting node : " + node)
+      }
       var returned = RESTApi.post("/v2/projects/" + ProjectId + "/nodes/" + nodesId.getOrElse(node, "") + "/start","{}",serverAddress)
       this
     }
@@ -106,6 +124,9 @@ class ProjectManager(var ProjectId: String, var serverAddress:String) {
      * @return ProjectManager to be fluent
      */
     def stopNode(node:Node): ProjectManager = {
+      if(!nodesId.contains(node)){
+        throw NodeNotFoundException("Node not found : you wanted to remove an innexisting node : " + node)
+      }
       var returned = RESTApi.post("/v2/projects/" + ProjectId + "/nodes/" + nodesId.getOrElse(node, "") + "/stop","{}",serverAddress)
       this
     }
