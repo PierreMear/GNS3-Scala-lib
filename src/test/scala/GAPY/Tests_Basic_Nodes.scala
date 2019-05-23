@@ -8,6 +8,8 @@ import org.json.simple._
 @Test
 class Tests_Basic_Nodes {
   
+  
+    ////// Fonctions d'aide
     def returnServerAddress(): String = {
       return "http://148.60.11.201:3080"
     }
@@ -23,18 +25,20 @@ class Tests_Basic_Nodes {
       return response.body
     }
     
+    //Test si les nodes et liens sont bien créées, avec le bon nom et le bon type
     @Test
     def testProjectAndCNodesAndLinks() = {
       val projEmptyTest = new GNS3_Manager(returnServerAddress())
       val p = projEmptyTest.createProject("projEmpty")
       var check = checkProjectsAPI("")
-      val proj_id = p.ProjectId      
+      val proj_id = p.ProjectId  //Vraiment sale de devoir faire comme ça
       assert(check != "[]", "The project 'projEmpty' should have been created")
       val one = objectTypes.Vpcs("Hyrule","id")
       p.addNode(one);
       val returned = checkProjectsAPI("/" + proj_id + "/nodes" )
-      println(returned)
+      // Faire un getNodes dans le projet manager
       
+      //TODO
       
       projEmptyTest.deleteProject(proj_id) 
       check = checkProjectsAPI("")

@@ -6,7 +6,8 @@ import scalaj.http._
 
 @Test
 class Test_Basic {
-  
+    
+    // Fonctions d'aides
     def returnServerAddress(): String = {
       return "http://148.60.11.201:3080"
     }
@@ -21,7 +22,8 @@ class Test_Basic {
       
       return response.body
     }
-
+    
+    //Test si le server ne contient effectivement aucun projet
     @Test
     def testNoProject() = {
         val gns3_server_url = "http://148.60.11.201"
@@ -33,6 +35,7 @@ class Test_Basic {
         assert(response.body == "[]", "No project should exist. Should had [] but had " + response)
     }
 
+    //Test de création puis deletion d'un projet
     @Test
     def testCreateEmptyProject() = {
       val projEmptyTest = new GNS3_Manager(returnServerAddress())
@@ -41,6 +44,7 @@ class Test_Basic {
 
       
       var check = checkProjectsAPI()
+      print(check)
       val proj_id = p.ProjectId
       
       assert(check != "[]", "The project 'projEmpty' should have been created")
