@@ -44,9 +44,7 @@ class Test_Basic {
 
       
       var check = checkProjectsAPI()
-      print(check)
       val proj_id = p.ProjectId
-      print(proj_id)
       
       assert(check != "[]", "The project 'projEmpty' should have been created")
       
