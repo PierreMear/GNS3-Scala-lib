@@ -23,7 +23,6 @@ class GNS3_Manager(val serverAddress:String) {
     status match {
       case code if code.equals("404") => throw new NotFoundException("project not found");
       case code if code.equals("500") => throw new InternalServerErrorException("server unreachable");
-      case _ => throw new UnknownException("unknown exception");
     }
     this
   }
