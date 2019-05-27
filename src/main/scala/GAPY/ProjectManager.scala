@@ -7,13 +7,13 @@ import scala.collection.mutable.Map
 import org.json.simple._   
 
 import objectTypes._
-import GAPY.GNS3_Exceptions.NodeNotFoundException
+import GAPY.GNS3_Exceptions._
 
 /**
  * Manager of a GNS3 project
  * @author Gwandalff
  */
-class ProjectManager(var ProjectId: String, var serverAddress:String) {
+class ProjectManager(val ProjectId: String, val serverAddress:String) {
   
     // Map Node/ID of the nodes in this project
     private val nodesId = Map[Node,String]()
@@ -95,8 +95,7 @@ class ProjectManager(var ProjectId: String, var serverAddress:String) {
     def removeLink(link:Link): ProjectManager = {
       val zelda:Link = RawLink(link.to,link.from,link.toPort,link.fromPort,link.toAdapter,link.fromAdapter)
       if(!linksId.contains(link) && !linksId.contains(zelda)){
-        //throw LinkNotFoundException("Link not found : you wanted to remove an innexisting link : " + link)
-        throw NodeNotFoundException("Link not found : you wanted to remove an innexisting link : " + link)
+        throw LinkNotFoundException("Link not found : you wanted to remove an innexisting link : " + link)
       }
       var returned = RESTApi.delete("/v2/projects/" + ProjectId + "/links/" + linksId.getOrElse(link, linksId.getOrElse(zelda, "")),serverAddress)
       linksId -= link

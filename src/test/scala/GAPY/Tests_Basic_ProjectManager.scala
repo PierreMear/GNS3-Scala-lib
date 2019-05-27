@@ -4,6 +4,7 @@ import org.junit._
 import Assert._
 import scalaj.http._
 
+
 @Test
 class Test_Basic {
     
@@ -35,8 +36,9 @@ class Test_Basic {
         assert(response.body == "[]", "No project should exist. Should had [] but had " + response)
     }
 
-    //Test de création puis deletion d'un projet
     @Test
+    //Test de création puis deletion d'un projet
+
     def testCreateEmptyProject() = {
       val projEmptyTest = new GNS3_Manager(returnServerAddress())
       
@@ -44,13 +46,23 @@ class Test_Basic {
 
       
       var check = checkProjectsAPI()
-      print(check)
       val proj_id = p.ProjectId
-      print(proj_id)
       
       assert(check != "[]", "The project 'projEmpty' should have been created")
       
-      projEmptyTest.deleteProject(proj_id)
+      try
+      {
+        projEmptyTest.deleteProject(proj_id)
+      } 
+      catch
+      {
+        case ex: Exception => {
+          ex.printStackTrace
+          System.exit(1)
+        }
+
+      }
+      
         
       check = checkProjectsAPI()
 
