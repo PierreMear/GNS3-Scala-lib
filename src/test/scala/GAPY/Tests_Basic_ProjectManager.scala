@@ -25,7 +25,7 @@ class Test_Basic {
     }
     
     //Test si le server ne contient effectivement aucun projet
-
+    @Test
     def testNoProject() = {
         val gns3_server_url = "http://148.60.11.201"
         val gns3_server_port = "3080"
@@ -36,6 +36,7 @@ class Test_Basic {
         assert(response.body == "[]", "No project should exist. Should had [] but had " + response)
     }
 
+    @Test
     //Test de création puis deletion d'un projet
 
     def testCreateEmptyProject() = {

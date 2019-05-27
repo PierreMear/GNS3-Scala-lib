@@ -8,7 +8,6 @@ import org.json.simple._
 @Test
 class Tests_Basic_Nodes {
   
-  
     ////// Fonctions d'aide
     def returnServerAddress(): String = {
       return "http://148.60.11.201:3080"
@@ -26,7 +25,7 @@ class Tests_Basic_Nodes {
     }
     
     //Test si les nodes et liens sont bien créées, avec le bon nom et le bon type
-
+    @Test
     def testProjectAndCNodesAndLinks() = {
       val projEmptyTest = new GNS3_Manager(returnServerAddress())
       val p = projEmptyTest.createProject("projEmpty")
