@@ -36,9 +36,8 @@ class Test_Basic {
         assert(response.body == "[]", "No project should exist. Should had [] but had " + response)
     }
 
-    @Test
     //Test de création puis deletion d'un projet
-
+    @Test
     def testCreateEmptyProject() = {
       val projEmptyTest = new GNS3_Manager(returnServerAddress())
       
