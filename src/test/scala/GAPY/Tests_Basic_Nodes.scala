@@ -40,7 +40,7 @@ class Tests_Basic_Nodes {
       
       //TODO
       
-      projEmptyTest.deleteProject(proj_id) 
+      projNodeTest.deleteProject(proj_id) 
       check = checkProjectsAPI("")
       assert(check == "[]", "The project 'projNode' should have been destroyed")
             
