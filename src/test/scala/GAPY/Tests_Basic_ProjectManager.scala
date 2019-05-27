@@ -4,6 +4,7 @@ import org.junit._
 import Assert._
 import scalaj.http._
 
+
 @Test
 class Test_Basic {
     
@@ -48,7 +49,19 @@ class Test_Basic {
       
       assert(check != "[]", "The project 'projEmpty' should have been created")
       
-      projEmptyTest.deleteProject(proj_id)
+      try
+      {
+        projEmptyTest.deleteProject(proj_id)
+      } 
+      catch
+      {
+        case ex: Exception => {
+          ex.printStackTrace
+          System.exit(1)
+        }
+
+      }
+      
         
       check = checkProjectsAPI()
 
