@@ -19,10 +19,13 @@ class GNS3_Manager(val serverAddress:String) {
   def deleteProject(projectId: String) : GNS3_Manager = {
     val returned = RESTApi.delete("/v2/projects/" + projectId, serverAddress);
     val jsonObj:JSONObject = JSONValue.parse(returned).asInstanceOf[JSONObject];
-    val status: String = jsonObj.get("status").asInstanceOf[String];
-    status match {
-      case code if code.equals("404") => throw new NotFoundException("project not found");
-      case code if code.equals("500") => throw new InternalServerErrorException("server unreachable");
+    val statusObj = jsonObj.get("status");
+    if(statusObj != null){
+      val status: String = statusObj.asInstanceOf[String];
+      status match {
+        case code if code.equals("404") => throw new NotFoundException("project not found");
+        case code if code.equals("500") => throw new InternalServerErrorException("server unreachable");
+      }
     }
     this
   }
