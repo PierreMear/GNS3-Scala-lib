@@ -25,7 +25,7 @@ class Test_Basic {
     }
     
     //Test si le server ne contient effectivement aucun projet
-    @Test
+
     def testNoProject() = {
         val gns3_server_url = "http://148.60.11.201"
         val gns3_server_port = "3080"
@@ -37,7 +37,7 @@ class Test_Basic {
     }
 
     //Test de création puis deletion d'un projet
-    @Test
+
     def testCreateEmptyProject() = {
       val projEmptyTest = new GNS3_Manager(returnServerAddress())
       
