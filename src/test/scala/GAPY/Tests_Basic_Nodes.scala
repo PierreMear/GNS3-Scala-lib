@@ -27,11 +27,11 @@ class Tests_Basic_Nodes {
     //Test si les nodes et liens sont bien créées, avec le bon nom et le bon type
     @Test
     def testProjectAndCNodesAndLinks() = {
-      val projEmptyTest = new GNS3_Manager(returnServerAddress())
-      val p = projEmptyTest.createProject("projEmpty")
+      val projNodeTest = new GNS3_Manager(returnServerAddress())
+      val p = projNodeTest.createProject("projNode")
       var check = checkProjectsAPI("")
       val proj_id = p.ProjectId
-      assert(check != "[]", "The project 'projEmpty' should have been created")
+      assert(check != "[]", "The project 'projNode' should have been created")
       val one = objectTypes.Vpcs("Hyrule","id")
       p.addNode(one);
       val returned = checkProjectsAPI("/" + proj_id + "/nodes" )
@@ -42,7 +42,7 @@ class Tests_Basic_Nodes {
       
       projEmptyTest.deleteProject(proj_id) 
       check = checkProjectsAPI("")
-      assert(check == "[]", "The project 'projEmpty' should have been destroyed")
+      assert(check == "[]", "The project 'projNode' should have been destroyed")
             
     }
     

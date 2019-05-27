@@ -48,21 +48,8 @@ class Test_Basic {
       val proj_id = p.ProjectId
       
       assert(check != "[]", "The project 'projEmpty' should have been created")
-      
-      try
-      {
-        projEmptyTest.deleteProject(proj_id)
-      } 
-      catch
-      {
-        case ex: Exception => {
-          ex.printStackTrace
-          System.exit(1)
-        }
-
-      }
-      
-        
+    
+      projEmptyTest.deleteProject(proj_id)    
       check = checkProjectsAPI()
 
       assert(check == "[]", "The project 'projEmpty' should have been destroyed")
