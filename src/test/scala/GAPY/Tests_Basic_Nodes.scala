@@ -36,7 +36,7 @@ class Tests_Basic_Nodes {
       val one = objectTypes.Vpcs("Hyrule","id")
       p.addNode(one);
       val returned = checkProjectsAPI("/" + proj_id + "/nodes" )
-      obj=JSONValue.parse(returned);
+      val obj = JSONValue.parse(returned);
       println(obj)
       
       //TODO
