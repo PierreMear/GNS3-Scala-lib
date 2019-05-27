@@ -47,4 +47,8 @@ object JSONApi {
   def value[T]() : T = {
     pointer.asInstanceOf[T]
   }
+  
+  def isNullPointer() : Boolean = {
+    pointer == null
+  }
 }

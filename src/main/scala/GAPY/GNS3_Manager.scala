@@ -13,29 +13,34 @@ class GNS3_Manager(val serverAddress:String) {
     val returned = RESTApi.post("/v2/projects", "{\"name\": \"" + name + "\"}",serverAddress);
     JSONApi.parseJSONObject(returned).getFromObject("project_id")
     val projectId = JSONApi.value[String];
-    JSONApi.parseJSONObject(returned).getFromObject("status")
-    val status = JSONApi.value[Long];
-    if(status != null){
+    JSONApi.parseJSONObject(returned).getFromObject("message");
+    if(!JSONApi.isNullPointer()) {
+      val message = JSONApi.value[String];
+      JSONApi.parseJSONObject(returned).getFromObject("status")
+      val status = JSONApi.value[Long]();
       status match {
         case 404 => throw new NotFoundException("project not found");
         case 500 => throw new InternalServerErrorException("server unreachable");
         case 409 => throw new ConflictException("Conflict with existing project");
-       }
+      } 
     }
     return new ProjectManager(projectId, serverAddress);
   }
 
   def deleteProject(projectId: String) : GNS3_Manager = {
     val returned = RESTApi.delete("/v2/projects/" + projectId, serverAddress);
-
-    JSONApi.parseJSONObject(returned).getFromObject("status")
-    val status = JSONApi.value[Long];
-    if(status != null){
-      status match {
-        case 404 => throw new NotFoundException("project not found");
-        case 500 => throw new InternalServerErrorException("server unreachable");
-        case 409 => throw new ConflictException("Conflict with existing project");
-       }
+    if(returned != ""){
+      JSONApi.parseJSONObject(returned).getFromObject("message");
+      if(!JSONApi.isNullPointer()) {
+        val message = JSONApi.value[String];
+        JSONApi.parseJSONObject(returned).getFromObject("status")
+        val status = JSONApi.value[Long]();
+        status match {
+          case 404 => throw new NotFoundException("project not found");
+          case 500 => throw new InternalServerErrorException("server unreachable");
+          case 409 => throw new ConflictException("Conflict with existing project");
+        } 
+      } 
     }
     this
   }
@@ -54,12 +59,10 @@ class GNS3_Manager(val serverAddress:String) {
     if(id != null){
       return id
     }else{
-      if(status != null){
-        status match {
-          case 404 => throw new NotFoundException("project not found");
-          case 500 => throw new InternalServerErrorException("server unreachable");
-          case 409 => throw new ConflictException("Conflict with existing project");
-        }
+      status match {
+        case 404 => throw new NotFoundException("project not found");
+        case 500 => throw new InternalServerErrorException("server unreachable");
+        case 409 => throw new ConflictException("Conflict with existing project");
       }
       return null;
     }
