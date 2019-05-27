@@ -26,12 +26,12 @@ class Tests_Basic_Nodes {
     }
     
     //Test si les nodes et liens sont bien créées, avec le bon nom et le bon type
-    @Test
+
     def testProjectAndCNodesAndLinks() = {
       val projEmptyTest = new GNS3_Manager(returnServerAddress())
       val p = projEmptyTest.createProject("projEmpty")
       var check = checkProjectsAPI("")
-      val proj_id = p.ProjectId  //Vraiment sale de devoir faire comme ça
+      val proj_id = p.ProjectId
       assert(check != "[]", "The project 'projEmpty' should have been created")
       val one = objectTypes.Vpcs("Hyrule","id")
       p.addNode(one);
