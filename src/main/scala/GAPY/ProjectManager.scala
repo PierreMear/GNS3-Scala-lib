@@ -31,7 +31,7 @@ class ProjectManager(val ProjectId: String, val serverAddress:String) {
     def addNode(n:Node): ProjectManager = {
       val body = "{\"name\":\"%s\",\"node_type\":\"%s\",\"compute_id\":\"%s\"}".format(n.name,n.node_type,n.compute_id)
       val returned = RESTApi.post("/v2/projects/" + ProjectId + "/nodes",body,serverAddress)
-      JSONApi.getFromObject(returned).getFromObject("node_id")
+      JSONApi.parseJSONObject(returned).getFromObject("node_id")
       nodesId += (n -> JSONApi.value[String])
       this
     }
