@@ -28,7 +28,7 @@ class GNS3_Manager(val serverAddress:String) {
   def deleteProject(projectId: String) : GNS3_Manager = {
     val returned = RESTApi.delete("/v2/projects/" + projectId, serverAddress);
 
-    JSONApi.parseJSONObject(returned).get("status")
+    JSONApi.parseJSONObject(returned).getFromObject("status")
     val status = JSONApi.value[Long];
     if(status != null){
       status match {
@@ -42,9 +42,9 @@ class GNS3_Manager(val serverAddress:String) {
 
   def getProjectId(name : String) : String = {
     val returned = RESTApi.get("/v2/projects/", serverAddress);
-    JSONApi.parseJSONObject(returned).get("status")
+    JSONApi.parseJSONObject(returned).getFromObject("status")
     val status = JSONApi.value[Long];
-    val projects = JSONApi.parseJSONArray(returned).value[Array]
+    val projects = JSONApi.parseJSONArray(returned).value[Array[Object]]
     var id:String = "ID"
     for(project <- projects){
       if(project.asInstanceOf[JSONObject].get("name").asInstanceOf[String] == name){
