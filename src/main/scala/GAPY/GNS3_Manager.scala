@@ -11,12 +11,11 @@ class GNS3_Manager(val serverAddress:String) {
 
   def createProject(name : String) : ProjectManager = {
     val returned = RESTApi.post("/v2/projects", "{\"name\": \"" + name + "\"}",serverAddress);
-    val obj = JSONValue.parse(returned);
-    val jsonObj:JSONObject = obj.asInstanceOf[JSONObject];
-    val projectId = jsonObj.get("project_id").asInstanceOf[String];
-    val statusObj = jsonObj.get("status");
-    if(statusObj != null){
-      val status: Long = statusObj.asInstanceOf[Long];
+    JSONApi.parseJSONObject(returned).getFromObject("project_id")
+    val projectId = JSONApi.value[String];
+    JSONApi.parseJSONObject(returned).getFromObject("status")
+    val status = JSONApi.value[Long];
+    if(status != null){
       status match {
         case 404 => throw new NotFoundException("project not found");
         case 500 => throw new InternalServerErrorException("server unreachable");
@@ -28,10 +27,10 @@ class GNS3_Manager(val serverAddress:String) {
 
   def deleteProject(projectId: String) : GNS3_Manager = {
     val returned = RESTApi.delete("/v2/projects/" + projectId, serverAddress);
-    val jsonObj:JSONObject = JSONValue.parse(returned).asInstanceOf[JSONObject];
-    val statusObj = jsonObj.get("status");
-    if(statusObj != null){
-      val status: Long = statusObj.asInstanceOf[Long];
+
+    JSONApi.parseJSONObject(returned).get("status")
+    val status = JSONApi.value[Long];
+    if(status != null){
       status match {
         case 404 => throw new NotFoundException("project not found");
         case 500 => throw new InternalServerErrorException("server unreachable");
@@ -43,14 +42,19 @@ class GNS3_Manager(val serverAddress:String) {
 
   def getProjectId(name : String) : String = {
     val returned = RESTApi.get("/v2/projects/", serverAddress);
-    val jsonObj:JSONObject = JSONValue.parse(returned).asInstanceOf[JSONObject];
-    val jsonProjet:JSONObject = jsonObj.getJSONObject(name);
-    val statusObj = jsonObj.get("status");
-    if(jsonProjet != null){
-      return jsonProjet.getString("Id");
+    JSONApi.parseJSONObject(returned).get("status")
+    val status = JSONApi.value[Long];
+    val projects = JSONApi.parseJSONArray(returned).value[Array]
+    var id:String = "ID"
+    for(project <- projects){
+      if(project.asInstanceOf[JSONObject].get("name").asInstanceOf[String] == name){
+        id = project.asInstanceOf[JSONObject].get("project_id").asInstanceOf[String]
+      }
+    }
+    if(id != null){
+      return id
     }else{
-      if(statusObj != null){
-        val status: Long = statusObj.asInstanceOf[Long];
+      if(status != null){
         status match {
           case 404 => throw new NotFoundException("project not found");
           case 500 => throw new InternalServerErrorException("server unreachable");

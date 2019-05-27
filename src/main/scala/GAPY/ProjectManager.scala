@@ -31,9 +31,8 @@ class ProjectManager(val ProjectId: String, val serverAddress:String) {
     def addNode(n:Node): ProjectManager = {
       val body = "{\"name\":\"%s\",\"node_type\":\"%s\",\"compute_id\":\"%s\"}".format(n.name,n.node_type,n.compute_id)
       val returned = RESTApi.post("/v2/projects/" + ProjectId + "/nodes",body,serverAddress)
-      val obj=JSONValue.parse(returned); 
-      val node:JSONObject=obj.asInstanceOf[JSONObject];
-      nodesId += (n -> node.get("node_id").asInstanceOf[String])
+      JSONApi.getFromObject(returned).getFromObject("node_id")
+      nodesId += (n -> JSONApi.value[String])
       this
     }
     
@@ -58,9 +57,8 @@ class ProjectManager(val ProjectId: String, val serverAddress:String) {
       val node2 = "{\"adapter_number\":%s,\"node_id\":\"%s\",\"port_number\":%s}".format(link.toAdapter,nodesId.getOrElse(link.to, ""),link.toPort)
       val body = "{\"nodes\":[%s,%s]}".format(node1,node2)
       val returned = RESTApi.post("/v2/projects/" + ProjectId + "/links",body,serverAddress)
-      val obj=JSONValue.parse(returned); 
-      val json_link:JSONObject=obj.asInstanceOf[JSONObject];
-      linksId += ( link -> json_link.get("link_id").asInstanceOf[String])
+      JSONApi.getFromObject(returned).getFromObject("link_id")
+      linksId += ( link -> JSONApi.value[String])
       this
     }
     
