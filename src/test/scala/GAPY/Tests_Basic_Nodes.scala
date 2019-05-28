@@ -35,7 +35,7 @@ class Tests_Basic_Nodes {
       val one = objectTypes.Vpcs("Hyrule","id")
       p.addNode(one);
       val returned = checkProjectsAPI("/" + proj_id + "/nodes" )
-      val obj = JSONApi.parseJSONArray(returned);
+      val obj = JSONApi.parseJSONArray(returned).getFromArray(0).value[String];
       println(obj)
       
       //TODO
