@@ -45,9 +45,7 @@ class Tests_Basic_Nodes {
 
       //On récupère les données sur les nodes du projet
 
-      val returned = checkProjectsAPI("/" + proj_id + "/nodes" )
-      val obj = JSONApi.parseJSONArray(returned).value[JSONArray]
-      //println(obj.toJSONString()) //On print les données pour observer la structure du document renvoyé
+      var returned = checkProjectsAPI("/" + proj_id + "/nodes" )
 
       //On récupère les données des
       val obj_hyrule = JSONApi.parseJSONArray(returned).getFromArray(0).getFromObject("name").value[String]
@@ -61,6 +59,10 @@ class Tests_Basic_Nodes {
 
       p.addLink(link_one)
       p.addLink(link_two).addLink(link_three)
+
+      returned = checkProjectsAPI("/" + proj_id + "/nodes" )
+      val obj = JSONApi.parseJSONArray(returned).value[JSONArray]
+      println(obj.toJSONString()) //On print les données pour observer la structure du document renvoyé
       
       //TODO
       
