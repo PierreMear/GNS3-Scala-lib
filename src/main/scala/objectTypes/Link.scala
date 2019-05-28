@@ -11,4 +11,6 @@ abstract class Link(
       override def toString:String = {
         "["+fromAdapter+"\\"+from.toString()+":"+fromPort+"|----- Linked to -----|"+toPort+":"+to.toString()+"/"+toAdapter+"]"
       }
+      
+      def reverse:Link = RawLink(this.to,this.from,this.toPort,this.fromPort,this.toAdapter,this.fromAdapter)
     }
