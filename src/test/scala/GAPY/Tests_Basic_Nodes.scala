@@ -38,14 +38,14 @@ class Tests_Basic_Nodes {
       val obj = JSONApi.parseJSONArray(returned).value[JSONArray]
       println("here :") 
       println(obj.toJSONString())
-      val obj2 = JSONApi.parseJSONArray(returned).getFromArray(0).getFromObject("Name").value[String]
+      val obj2 = JSONApi.parseJSONArray(returned).getFromArray(0).getFromObject("name").value[String]
       
       //TODO
       
       projNodeTest.deleteProject(proj_id) 
       check = checkProjectsAPI("")
       assert(check == "[]", "The project 'projNode' should have been destroyed")
-      assert(obj2 == "Hyrule", "The project should have a Node nammed Hyrule, and it's not there.\n")            
+      assert(obj2 == "Hyrule", "The project should have a Node nammed Hyrule, and it's not there. " + obj2)            
     }
     
 }
