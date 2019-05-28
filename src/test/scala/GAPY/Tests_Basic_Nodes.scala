@@ -38,7 +38,7 @@ class Tests_Basic_Nodes {
       val obj = JSONApi.parseJSONArray(returned).value[JSONArray]
       println("here :") 
       println(obj.toJSONString())
-      val obj2 = JSONApi.parseJSONArray(returned).getFromArray(0).getFromObject("Name")
+      val obj2 = JSONApi.parseJSONArray(returned).getFromArray(0).getFromObject("Name").value[String]
       
       //TODO
       
