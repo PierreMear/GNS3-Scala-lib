@@ -189,16 +189,21 @@ class ProjectManager(val ProjectId: String, val serverAddress:String) {
      * @return ProjectManager to be fluent
      */
     def copyProject(projectManager:ProjectManager): ProjectManager = {
-      for(appliance:Appliance <- projectManager.appliancesId.keys){
+      var applianceIDs:List[String] = List()
+      for((appliance:Appliance, id:String) <- projectManager.appliancesId){
         this.addNode(appliance)
+        applianceIDs = id :: applianceIDs
       }
-      val applianceIDs:Array[String] = projectManager.appliancesId.values.asInstanceOf[Array[String]]
+      println(applianceIDs)
       for((node:Node, id:String) <- projectManager.nodesId){
         if(!applianceIDs.contains(id)) this.addNode(node)
       }
+      println(projectManager.nodesId)
+      
       for(link:Link <- projectManager.linksId.keys){
         this.addLink(link)
       }
+      
       this
     }
 }
