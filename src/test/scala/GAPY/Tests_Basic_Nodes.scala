@@ -46,6 +46,7 @@ class Tests_Basic_Nodes {
       p.addNode(three)
       p.addNode(four)
 
+      returned = checkProjectsAPI("/" + proj_id + "/nodes" )
       val obj = JSONApi.parseJSONArray(returned).value[JSONArray]
       println("here :") 
       println(obj.toJSONString())
