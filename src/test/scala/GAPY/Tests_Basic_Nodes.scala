@@ -32,24 +32,28 @@ class Tests_Basic_Nodes {
       var check = checkProjectsAPI("")
       val proj_id = p.ProjectId
       assert(check != "[]", "The project 'projNode' should have been created")
+
+      //On créé les objets Nodes que l'on va ajouter au projet
       val one = objectTypes.LocalHub("Hyrule")
-      p.addNode(one);
-      var returned = checkProjectsAPI("/" + proj_id + "/nodes" )
-
-      val obj2 = JSONApi.parseJSONArray(returned).getFromArray(0).getFromObject("name").value[String]
-
       val two = objectTypes.LocalVpcs("Ganon")
       val three = objectTypes.LocalVpcs("Zelda")
       val four = objectTypes.LocalVpcs("Link")
-
+      p.addNode(one);
       p.addNode(two)
       p.addNode(three)
       p.addNode(four)
 
-      returned = checkProjectsAPI("/" + proj_id + "/nodes" )
+      //On récupère les données sur les nodes du projet
+
+      val returned = checkProjectsAPI("/" + proj_id + "/nodes" )
       val obj = JSONApi.parseJSONArray(returned).value[JSONArray]
-      println("here :") 
-      println(obj.toJSONString())
+      //println(obj.toJSONString()) //On print les données pour observer la structure du document renvoyé
+
+      //On récupère les données des
+      val obj_hyrule = JSONApi.parseJSONArray(returned).getFromArray(0).getFromObject("name").value[String]
+      val obj_ganon = JSONApi.parseJSONArray(returned).getFromArray(1).getFromObject("name").value[String]
+      val obj_zelda = JSONApi.parseJSONArray(returned).getFromArray(2).getFromObject("name").value[String]
+      val obj_link = JSONApi.parseJSONArray(returned).getFromArray(3).getFromObject("name").value[String]
 
 
       
@@ -58,7 +62,10 @@ class Tests_Basic_Nodes {
       projNodeTest.deleteProject(proj_id) 
       check = checkProjectsAPI("")
       assert(check == "[]", "The project 'projNode' should have been destroyed")
-      assert(obj2 == "Hyrule", "The project should have a Node nammed Hyrule, and it's not there. " + obj2)            
+      assert(obj_hyrule == "Hyrule", "The project should have a Node nammed Hyrule, and it's not there. " + obj_hyrule)
+      assert(obj_ganon == "Ganon", "The project should have a Node nammed Ganon, and it's not there. " + obj_ganon) 
+      assert(obj_zelda == "Zelda", "The project should have a Node nammed Zelda, and it's not there. " + obj_zelda) 
+      assert(obj_link == "Link", "The project should have a Node nammed Link, and it's not there. " + obj_link)             
     }
     
 }
