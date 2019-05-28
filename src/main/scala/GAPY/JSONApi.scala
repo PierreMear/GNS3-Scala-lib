@@ -22,7 +22,7 @@ object JSONApi {
     if(pointer == null){
       throw JSONNotExisting("The JSON Object you wanted was null")
     }
-    try{
+    try {
       pointer = pointer.asInstanceOf[JSONObject].get(paramName).asInstanceOf[Object]
     } catch {
       case _:ClassCastException => throw JSONCastError("You've tried to get from a JSONObject but that wasn't an object")

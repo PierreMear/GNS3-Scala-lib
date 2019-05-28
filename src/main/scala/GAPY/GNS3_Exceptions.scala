@@ -18,6 +18,8 @@ object GNS3_Exceptions {
   case class LinkNotFoundException(private val message: String) extends Exception(message)
   // thrown when you want to use a node that wasn't created
   case class NodeNotFoundException(private val message: String) extends Exception(message)
+  // thrown when you want to create a node with an existing name
+  case class NodeNameConflictException(private val message: String) extends Exception(message)
   
   
   // default
