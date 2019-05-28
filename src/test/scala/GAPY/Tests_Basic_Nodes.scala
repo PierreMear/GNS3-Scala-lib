@@ -57,18 +57,13 @@ class Tests_Basic_Nodes {
       val link_two = objectTypes.SimpleLink(one, three, 1,0)
       val link_three = objectTypes.SimpleLink(one, four, 2,0)
 
-<<<<<<< HEAD
-      try {
+      try{
         p.addLink(link_one)
         p.addLink(link_two).addLink(link_three)
       } catch {
         case ex: Exception => throw new Exception("Error : \n" + ex.printStackTrace()) 
       }
-=======
-      p.addLink(link_one)
-      p.addLink(link_two).addLink(link_three)
->>>>>>> b1e5f7a4379b59d61ae83615c979d00ef1d15e9e
-
+      
       returned = checkProjectsAPI("/" + proj_id + "/nodes" )
       val obj = JSONApi.parseJSONArray(returned).value[JSONArray]
       println(obj.toJSONString()) //On print les données pour observer la structure du document renvoyé
