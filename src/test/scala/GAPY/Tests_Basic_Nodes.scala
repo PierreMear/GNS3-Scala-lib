@@ -55,7 +55,11 @@ class Tests_Basic_Nodes {
       val obj_zelda = JSONApi.parseJSONArray(returned).getFromArray(2).getFromObject("name").value[String]
       val obj_link = JSONApi.parseJSONArray(returned).getFromArray(3).getFromObject("name").value[String]
 
+      val link_one = objectTypes.SimpleLink(one, two, 0,0)
+      val link_two = objectTypes.SimpleLink(one, three, 1,0)
+      val link_three = objectTypes.SimpleLink(one, four, 2,0)
 
+      p.addLink(link_one).addLink(link_two).addLink(link_three)
       
       //TODO
       
