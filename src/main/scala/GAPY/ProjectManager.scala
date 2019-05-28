@@ -32,6 +32,9 @@ class ProjectManager(val ProjectId: String, val serverAddress:String) {
      * @return ProjectManager to be fluent
      */
     def addNode(n:Node): ProjectManager = {
+      if(nodesId.filter((entry) => entry._1.name == n.name).size > 0){
+        throw NodeNameConflictException("Conflict in nodes names : an other node already have this name -> " + n.name)
+      }
       val body = "{\"name\":\"%s\",\"node_type\":\"%s\",\"compute_id\":\"%s\"}".format(n.name,n.node_type,n.compute_id)
       val returned = RESTApi.post("/v2/projects/" + ProjectId + "/nodes",body,serverAddress)
       JSONApi.parseJSONObject(returned).getFromObject("node_id")
@@ -47,6 +50,9 @@ class ProjectManager(val ProjectId: String, val serverAddress:String) {
      * @return ProjectManager to be fluent
      */
     def addNode(a:Appliance): ProjectManager = {
+      if(nodesId.filter((entry) => entry._1.name == a.name).size > 0){
+        throw NodeNameConflictException("Conflict in nodes names : an other node already have this name -> " + a.name)
+      }
       val returned = RESTApi.get("/v2/appliances",serverAddress)
       val appliances = JSONApi.parseJSONArray(returned).value[JSONArray]
       var applianceID:String = ""
@@ -121,8 +127,7 @@ class ProjectManager(val ProjectId: String, val serverAddress:String) {
     
     /**
      * removeLink : remove a link in the GNS3 project and remove its ID in the (Node,Node)/id Map
-     * @param name1 : the name of the first node
-     * @param name2 : the name of the second node
+     * @param link : Object representing a link : {@link Link}
      * @return ProjectManager to be fluent
      */
     def removeLink(link:Link): ProjectManager = {
@@ -189,16 +194,21 @@ class ProjectManager(val ProjectId: String, val serverAddress:String) {
      * @return ProjectManager to be fluent
      */
     def copyProject(projectManager:ProjectManager): ProjectManager = {
-      for(appliance:Appliance <- projectManager.appliancesId.keys){
+      var applianceIDs:List[String] = List()
+      for((appliance:Appliance, id:String) <- projectManager.appliancesId){
         this.addNode(appliance)
+        applianceIDs = id :: applianceIDs
       }
-      val applianceIDs:Array[String] = projectManager.appliancesId.values.asInstanceOf[Array[String]]
+      println(applianceIDs)
       for((node:Node, id:String) <- projectManager.nodesId){
         if(!applianceIDs.contains(id)) this.addNode(node)
       }
+      println(projectManager.nodesId)
+      
       for(link:Link <- projectManager.linksId.keys){
         this.addLink(link)
       }
+      
       this
     }
 }
