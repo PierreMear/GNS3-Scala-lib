@@ -35,9 +35,9 @@ class Tests_Basic_Nodes {
       val one = objectTypes.Hub("Hyrule","id")
       p.addNode(one);
       val returned = checkProjectsAPI("/" + proj_id + "/nodes" )
-      val obj = JSONApi.parseJSONArray(returned).toJSONString()
+      val obj = JSONApi.parseJSONArray(returned)
       println("here :") 
-      println(obj)
+      println(obj.toJSONString())
       
       //TODO
       
