@@ -34,11 +34,23 @@ class Tests_Basic_Nodes {
       assert(check != "[]", "The project 'projNode' should have been created")
       val one = objectTypes.LocalHub("Hyrule")
       p.addNode(one);
-      val returned = checkProjectsAPI("/" + proj_id + "/nodes" )
+      var returned = checkProjectsAPI("/" + proj_id + "/nodes" )
+
+      val obj2 = JSONApi.parseJSONArray(returned).getFromArray(0).getFromObject("name").value[String]
+
+      val two = objectTypes.LocalVpcs("Ganon")
+      val three = objectTypes.LocalVpcs("Zelda")
+      val four = objectTypes.LocalVpcs("Link")
+
+      p.addNode(two)
+      p.addNode(three)
+      p.addNode(four)
+
       val obj = JSONApi.parseJSONArray(returned).value[JSONArray]
       println("here :") 
       println(obj.toJSONString())
-      val obj2 = JSONApi.parseJSONArray(returned).getFromArray(0).getFromObject("name").value[String]
+
+
       
       //TODO
       
