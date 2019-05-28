@@ -57,8 +57,12 @@ class Tests_Basic_Nodes {
       val link_two = objectTypes.SimpleLink(one, three, 1,0)
       val link_three = objectTypes.SimpleLink(one, four, 2,0)
 
-      p.addLink(link_one)
-      p.addLink(link_two).addLink(link_three)
+      try {
+        p.addLink(link_one)
+        p.addLink(link_two).addLink(link_three)
+      } catch {
+        case ex: Exception => throw new Exception("Error : \n" + ex.printStackTrace()) 
+      }
 
       returned = checkProjectsAPI("/" + proj_id + "/nodes" )
       val obj = JSONApi.parseJSONArray(returned).value[JSONArray]
