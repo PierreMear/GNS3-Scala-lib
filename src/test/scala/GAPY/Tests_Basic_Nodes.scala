@@ -32,10 +32,10 @@ class Tests_Basic_Nodes {
       var check = checkProjectsAPI("")
       val proj_id = p.ProjectId
       assert(check != "[]", "The project 'projNode' should have been created")
-      val one = objectTypes.Vpcs("Hyrule","id")
+      val one = objectTypes.Hub("Hyrule","id")
       p.addNode(one);
       val returned = checkProjectsAPI("/" + proj_id + "/nodes" )
-      val obj = JSONApi.parseJSONArray(returned).value[String];
+      val obj = JSONApi.parseJSONArray(returned).;
       println(obj)
       
       //TODO
