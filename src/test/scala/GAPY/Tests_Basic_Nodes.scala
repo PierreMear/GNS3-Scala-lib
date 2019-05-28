@@ -60,7 +60,7 @@ class Tests_Basic_Nodes {
       val link_three = objectTypes.SimpleLink(one, four, 2,0)
 
       p.addLink(link_one)
-      //p.addLink(link_two).addLink(link_three)
+      p.addLink(link_two).addLink(link_three)
       
       //TODO
       
