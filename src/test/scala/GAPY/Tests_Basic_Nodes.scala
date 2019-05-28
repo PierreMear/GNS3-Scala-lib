@@ -47,11 +47,16 @@ class Tests_Basic_Nodes {
 
       var returned = checkProjectsAPI("/" + proj_id + "/nodes" )
 
-      //On récupère les données des
+      //On récupère les données des nodes via l'API Basiques de GNS3
       val obj_hyrule = JSONApi.parseJSONArray(returned).getFromArray(0).getFromObject("name").value[String]
       val obj_ganon = JSONApi.parseJSONArray(returned).getFromArray(1).getFromObject("name").value[String]
       val obj_zelda = JSONApi.parseJSONArray(returned).getFromArray(2).getFromObject("name").value[String]
       val obj_link = JSONApi.parseJSONArray(returned).getFromArray(3).getFromObject("name").value[String]
+
+      val id_hyrule = JSONApi.parseJSONArray(returned).getFromArray(0).getFromObject("node_id").value[String]
+      val id_ganon = JSONApi.parseJSONArray(returned).getFromArray(1).getFromObject("node_id").value[String]
+      val id_zelda = JSONApi.parseJSONArray(returned).getFromArray(2).getFromObject("node_id").value[String]
+      val id_link = JSONApi.parseJSONArray(returned).getFromArray(3).getFromObject("node_id").value[String]
 
       val link_one = objectTypes.SimpleLink(one, two, 0,0)
       val link_two = objectTypes.SimpleLink(one, three, 1,0)
@@ -63,12 +68,12 @@ class Tests_Basic_Nodes {
       } catch {
         case ex: Exception => throw new Exception("Error : \n" + ex.printStackTrace()) 
       }
-      
-      returned = checkProjectsAPI("/" + proj_id + "/nodes" )
+
+      returned = checkProjectsAPI("/" + proj_id + "/links" )
       val obj = JSONApi.parseJSONArray(returned).value[JSONArray]
       println(obj.toJSONString()) //On print les données pour observer la structure du document renvoyé
       
-      //TODO
+      
       
       projNodeTest.deleteProject(proj_id) 
       check = checkProjectsAPI("")
