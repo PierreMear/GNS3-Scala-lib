@@ -38,7 +38,7 @@ class Tests_Basic_Nodes {
       val two = objectTypes.LocalVpcs("Ganon")
       val three = objectTypes.LocalVpcs("Zelda")
       val four = objectTypes.LocalVpcs("Link")
-      p.addNode(one);
+      p.addNode(one)
       p.addNode(two)
       p.addNode(three)
       p.addNode(four)
@@ -97,5 +97,42 @@ class Tests_Basic_Nodes {
       assert(obj_zelda == "Zelda", "The project should have a Node nammed Zelda, and it's not there. " + obj_zelda) 
       assert(obj_link == "Link", "The project should have a Node nammed Link, and it's not there. " + obj_link)             
     }
-    
+
+    @Test
+    def testProjectFalseLink() = {
+      val projNodeTest = new GNS3_Manager(returnServerAddress())
+      val p = projNodeTest.createProject("projFalseLink")
+      var check = checkProjectsAPI("")
+      val proj_id = p.ProjectId
+      assert(check != "[]", "The project 'projNode' should have been created")
+
+      val unique = objectTypes.LocalSwitch("Galatron")
+      p.addNode(unique)
+
+      // On test que l'ajout d'un lien impossible rend bien la bonne erreur
+      var good_error = False
+      try {
+        val link_unique = objectTypes.SimpleLink(unique, two, 0,0)
+        p.addLink(link_unique)
+      } catch {
+        case ext: NodeNotFoundException => good_error = True
+        case exc: Exception => throw new Exception("Error : \n" + ex.printStackTrace()) 
+      }
+      assert(good_error, "The code should have raised a NodeNotFoundException ! We created a link with a non-existing node")
+
+      // On test dans l'autre sens
+      good_error = False
+      try {
+        val link_unique_two = objectTypes.SimpleLink(two, unique, 0,0)
+        p.addLink(link_unique_two)
+      } catch {
+        case ext: NodeNotFoundException => good_error = True
+        case exc: Exception => throw new Exception("Error : \n" + ex.printStackTrace()) 
+      }
+      assert(good_error, "The code should have raised a NodeNotFoundException ! We created a link with a non-existing node")
+
+      projNodeTest.deleteProject(proj_id) 
+      check = checkProjectsAPI("")
+      assert(check == "[]", "The project 'projNode' should have been destroyed")
+    }
 }
