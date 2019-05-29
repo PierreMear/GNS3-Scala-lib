@@ -19,7 +19,7 @@ class Test_JSONApi {
     }
     
     def checkProjectsAPI(added:String): String = {
-      val http = Http(returnUrlAPI() + added)
+      val http = Http(added)
       val response: HttpResponse[String] = http.asString
       
       return response.body
