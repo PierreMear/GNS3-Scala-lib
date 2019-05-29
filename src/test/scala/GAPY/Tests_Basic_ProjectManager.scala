@@ -146,7 +146,7 @@ class Test_Basic {
       var res_nodes = ""
       var res_links = ""
       try {
-        p_bis.CopyProjet(p)
+        p_bis.copyProject(p)
         val returned_nodes = checkProjectsAPI("/" + proj_id + "/nodes" )
         val returned_links = checkProjectsAPI("/" + proj_id + "/links" )
         res_nodes = JSONApi.parseJSONArray(returned_nodes).getFromArray(5).getFromObject("name").value[String]
