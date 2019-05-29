@@ -11,8 +11,14 @@ import objectTypes._
 import GAPY.GNS3_Exceptions._
 
 /**
- * Manager of a GNS3 project
  * @author Gwandalff
+ * 
+ * Manager of a GNS3 project
+ * 
+ * This class don't need to be instanciated in itself because it's created by the {@link GNS3_Manager}
+ * 
+ * @param ProjectId the ID of the project we want to work on
+ * @param serverAddress the address of the GNS3 server(with port ex: 127.0.0.1:3080)
  */
 class ProjectManager(val ProjectId: String, val serverAddress:String) {
   
@@ -26,11 +32,11 @@ class ProjectManager(val ProjectId: String, val serverAddress:String) {
     private val linksId = Map[Link,String]()
   
     /**
-     * addNode : create a new node in the GNS3 project and save its ID in the name/id Map
-     * @param name : the name of the node
-     * @param nodeType : the type of the node
-     * @param computeId : the computeId of the node
-     * @return ProjectManager to be fluent
+     * addNode : create a new node in the GNS3 project and save its ID in the Node/id Map
+     * 
+     * @param n the {@link Node} object you want to create
+     * @return {@link ProjectManager} to be fluent
+     * @throws NodeNameConflictException if the name is already used for an other node
      */
     def addNode(n:objectTypes.Node): ProjectManager = {
       if(nodesId.filter((entry) => entry._1.name == n.name).size > 0){
@@ -44,11 +50,19 @@ class ProjectManager(val ProjectId: String, val serverAddress:String) {
     }
     
     /**
-     * addNode : create a new node in the GNS3 project and save its ID in the name/id Map
-     * @param name : the name of the node
-     * @param nodeType : the type of the node
-     * @param computeId : the computeId of the node
-     * @return ProjectManager to be fluent
+     * addNode : create a node in the project from an appliance template
+     * 
+     * Take an appliance object as parameter and check with the REST API if this appliance template exist
+     * if this template exist, then we get its ID and create it.
+     * <p>
+     * After that we will add the {@link Node} to the Node/ID map to ensure that it will be well used after.
+     * We add the {@link Appliance} object and the id of the node to the Appliance/ID to save the type of appliance
+     * we want to create when we copy the project.
+     * The ID saved in both maps is the node ID to not duplicate appliance nodes in a copy of the project
+     * 
+     * @param a the {@link Appliance} object you want to create
+     * @return {@link ProjectManager} to be fluent
+     * @throws NodeNameConflictException if the name is already used for an other node
      */
     def addNode(a:Appliance): ProjectManager = {
       if(nodesId.filter((entry) => entry._1.name == a.name).size > 0){
@@ -71,14 +85,11 @@ class ProjectManager(val ProjectId: String, val serverAddress:String) {
     }
     
     /**
-     * addLink : create a new link in the GNS3 project and save its ID in the (Node,Node)/id Map
-     * @param name1 : the name of the first node
-     * @param adaptater1 : adaptater number of the first node
-     * @param port1 : ethernet port of the first node
-     * @param name2 : the name of the second node
-     * @param adaptater2 : adaptater number of the second node
-     * @param port2 : ethernet port of the second node
-     * @return ProjectManager to be fluent
+     * addLink : create a new link in the GNS3 project and save its ID in the Link/id Map
+     * 
+     * @param link  the {@link Link} object which represent the connection we want to create
+     * @return {@link ProjectManager} to be fluent
+     * @throws NodeNotFoundException if one of the specified node doesn't exist
      */
     def addLink(link:Link): ProjectManager = {
       if(!nodesId.contains(link.from)){
@@ -98,8 +109,9 @@ class ProjectManager(val ProjectId: String, val serverAddress:String) {
     
     /**
      * addTopology : create a topology
-     * @param topology : the topology to create
-     * @return ProjectManager to be fluent
+     * 
+     * @param topology  the {@link Topology} to create
+     * @return {@link ProjectManager} to be fluent
      */
     def addTopology(topology:Topology): ProjectManager = {
       topology.create(this)
@@ -107,9 +119,16 @@ class ProjectManager(val ProjectId: String, val serverAddress:String) {
     }
     
     /**
-     * removeNode : remove a node in the GNS3 project and remove its ID in the name/id Map
-     * @param name : the name of the node to remove
-     * @return ProjectManager to be fluent
+     * removeNode : remove a node in the GNS3 project
+     * 
+     * Remove the node in GNS3 and in all the Maps of this lib including :<br>
+     *  - Node/ID<br>
+     *  - Appliance/ID if it was an {@link Appliance}
+     *  - Links/ID if this node was connected to other nodes
+     * 
+     * @param name  the name of the {@link Node} to remove
+     * @return {@link ProjectManager} to be fluent
+     * @throws NodeNotFoundException if the node don't exist
      */
     def removeNode(n:objectTypes.Node): ProjectManager = {
       if(!nodesId.contains(n)){
@@ -128,8 +147,10 @@ class ProjectManager(val ProjectId: String, val serverAddress:String) {
     
     /**
      * removeLink : remove a link in the GNS3 project and remove its ID in the (Node,Node)/id Map
-     * @param link : Object representing a link : {@link Link}
-     * @return ProjectManager to be fluent
+     * 
+     * @param link  the {@link Link} representing the connection which is gonna be deleted
+     * @return {@link ProjectManager} to be fluent
+     * @throws LinkNotFoundException if the link or the inverse link wasn't created before
      */
     def removeLink(link:Link): ProjectManager = {
       val zelda:Link = link.reverse
@@ -143,12 +164,14 @@ class ProjectManager(val ProjectId: String, val serverAddress:String) {
     
     /**
      * startNode : start the node
-     * @param node : node to start
-     * @return ProjectManager to be fluent
+     * 
+     * @param node  the {@link Node} to start
+     * @return {@link ProjectManager} to be fluent
+     * @throws NodeNotFoundException if the node doesn't exist
      */
     def startNode(node:objectTypes.Node): ProjectManager = {
       if(!nodesId.contains(node)){
-        throw NodeNotFoundException("Node not found : you wanted to remove an innexisting node : " + node)
+        throw NodeNotFoundException("Node not found : you wanted to start an innexisting node : " + node)
       }
       var returned = RESTApi.post("/v2/projects/" + ProjectId + "/nodes/" + nodesId.getOrElse(node, "") + "/start","{}",serverAddress)
       this
@@ -156,12 +179,14 @@ class ProjectManager(val ProjectId: String, val serverAddress:String) {
     
     /**
      * stopNode : stop the node
-     * @param node : node to stop
-     * @return ProjectManager to be fluent
+     * 
+     * @param node  the {@link Node} to stop
+     * @return {@link ProjectManager} to be fluent
+     * @throws NodeNotFoundException if the node doesn't exist
      */
     def stopNode(node:objectTypes.Node): ProjectManager = {
       if(!nodesId.contains(node)){
-        throw NodeNotFoundException("Node not found : you wanted to remove an innexisting node : " + node)
+        throw NodeNotFoundException("Node not found : you wanted to stop an innexisting node : " + node)
       }
       var returned = RESTApi.post("/v2/projects/" + ProjectId + "/nodes/" + nodesId.getOrElse(node, "") + "/stop","{}",serverAddress)
       this
@@ -169,7 +194,8 @@ class ProjectManager(val ProjectId: String, val serverAddress:String) {
     
     /**
      * startAll : start all the nodes of the project
-     * @return ProjectManager to be fluent
+     * 
+     * @return {@link ProjectManager} to be fluent
      */
     def startAll(): ProjectManager = {
       for((node,id) <- nodesId){
@@ -180,7 +206,8 @@ class ProjectManager(val ProjectId: String, val serverAddress:String) {
     
     /**
      * stopAll : stop all the nodes of the project
-     * @return ProjectManager to be fluent
+     * 
+     * @return {@link ProjectManager} to be fluent
      */
     def stopAll(): ProjectManager = {
       for((node,id) <- nodesId){
@@ -190,9 +217,14 @@ class ProjectManager(val ProjectId: String, val serverAddress:String) {
     }
      
     /**
-     * copyProject : copy the project given
-     * @param projectManager : the manager of the project you want to copy
-     * @return ProjectManager to be fluent
+     * copyProject : copy the project given into this project
+     * 
+     * First create all the {@link Appliance} nodes because of their specificity
+     * Then create all the remaining {@link Node} without duplicating the {@link Appliance} nodes
+     * Then create all the {@link Link} between the nodes that we created
+     * 
+     * @param projectManager : the {@link ProjectManager} of the project you want to copy
+     * @return {@link ProjectManager} to be fluent
      */
     def copyProject(projectManager:ProjectManager): ProjectManager = {
       var applianceIDs:List[String] = List()
@@ -213,6 +245,17 @@ class ProjectManager(val ProjectId: String, val serverAddress:String) {
       this
     }
     
+    /**
+     * layout : lay out the network on GNS3 GUI
+     * 
+     * Use the forcelayout Scala API (https://github.com/rsimon/scala-force-layout)
+     * 
+     * create a graph with forcelayout API and call its doLayout function to find the positions of the nodes
+     * 
+     * @param scale(Optional) expantion coefficient of the graph
+     * @param maxIteration(Optional) the number of the system forces and positions update 
+     * @return {@link ProjectManager} to be fluent
+     */
     def layout(scale:Int = 5, maxIteration:Int = 1000): ProjectManager = {
       var nodes:Seq[forcelayout.Node] = Seq()
       for((node:objectTypes.Node, id:String) <- nodesId){
