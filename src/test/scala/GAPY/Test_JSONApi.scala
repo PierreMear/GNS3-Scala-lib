@@ -32,10 +32,10 @@ class Test_JSONApi {
 
         var should = false
         try {
-            val obj_fail = JSONApi.parseJSONArray(returned)
+            val obj_fail = JSONApi.parseJSONObject(returned).getFromArray(0)
         } catch {
             case ev: JSON_Exceptions.JSONCastError => should = true
-            case ex: Exception => println("Erreur " + ex.printStackTrace()) ; should = true
+            case ex: Exception => println("Erreur " + ex.printStackTrace())
         }
 
         assert(should, "Should had JSONCASTERROR")
@@ -45,7 +45,7 @@ class Test_JSONApi {
             val obj_fail_2 = JSONApi.getFromObject("id")
        } catch {
             case ev: JSON_Exceptions.JSONNotExisting => should = true
-            case ex: Exception => println("Erreur " + ex.printStackTrace()) ; should = true
+            case ex: Exception => println("Erreur " + ex.printStackTrace())
         }
 
         assert(should, "Should had JSONNotExistingError")
