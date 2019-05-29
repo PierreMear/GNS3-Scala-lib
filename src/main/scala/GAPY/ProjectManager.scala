@@ -69,10 +69,10 @@ class ProjectManager(val ProjectId: String, val serverAddress:String) {
         throw NodeNameConflictException("Conflict in nodes names : an other node already have this name -> " + a.name)
       }
       val returned = RESTApi.get("/v2/appliances",serverAddress)
-      val appliances = JSONApi.parseJSONArray(returned).value[JSONArray]
+      val appliances = JSONApi.parseJSONArray(returned).value[JSONArray].toArray()
       var applianceID:String = ""
-      for(i <- 0 to appliances.size()){
-        val appliance = appliances.get(i).asInstanceOf[JSONObject]
+      for(obj_appliance <- appliances){
+        val appliance = obj_appliance.asInstanceOf[JSONObject]
         if(appliance.get("name").asInstanceOf[String] == a.appliance_name){
           applianceID = appliance.get("appliance_id").asInstanceOf[String]
         }
