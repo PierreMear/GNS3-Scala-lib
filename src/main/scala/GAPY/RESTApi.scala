@@ -1,4 +1,4 @@
-package gapy
+package GAPY
 
 import scalaj.http._
 import org.json.simple._

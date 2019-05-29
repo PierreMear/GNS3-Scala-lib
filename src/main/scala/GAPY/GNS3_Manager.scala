@@ -1,12 +1,12 @@
-package gapy
+package GAPY
 
 import scalaj.http._
 import org.json.simple._
-import gapy.GNS3_Exceptions.NotFoundException
-import gapy.GNS3_Exceptions.InternalServerErrorException
-import gapy.GNS3_Exceptions.UnknownException
-import gapy.GNS3_Exceptions.ConflictException
-import gapy.JSON_Exceptions.JSONCastError
+import GAPY.GNS3_Exceptions.NotFoundException
+import GAPY.GNS3_Exceptions.InternalServerErrorException
+import GAPY.GNS3_Exceptions.UnknownException
+import GAPY.GNS3_Exceptions.ConflictException
+import GAPY.JSON_Exceptions.JSONCastError
 
 /**
  * Manager of a GNS3 server

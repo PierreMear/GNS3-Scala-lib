@@ -1,4 +1,4 @@
-package gapy
+package GAPY
 
 object GNS3_Exceptions {
   // Network Exceptions

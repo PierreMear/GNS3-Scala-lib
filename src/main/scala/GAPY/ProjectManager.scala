@@ -1,14 +1,14 @@
-package gapy
+package GAPY
 
-import gapy.topologies.Topology
+import GAPY.topologies.Topology
 
 import scalaj.http._
 import scala.collection.mutable.Map
 import org.json.simple._
-import gapy.forcelayout._
+import GAPY.forcelayout._
 
-import gapy.objectTypes._
-import gapy.GNS3_Exceptions._
+import GAPY.objectTypes._
+import GAPY.GNS3_Exceptions._
 
 /**
  * @author Gwandalff

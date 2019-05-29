@@ -1,4 +1,4 @@
-package gapy
+package GAPY
 
 import org.json.simple._
 import scala.util.control.Exception.Catch
