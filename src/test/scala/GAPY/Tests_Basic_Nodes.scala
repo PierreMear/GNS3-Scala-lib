@@ -169,7 +169,7 @@ class Tests_Basic_Nodes {
       p.removeLink(link)
 
       // On test que si on reremove le link, le projectManager lance une erreur linkNotfound
-      good_error = false
+      var good_error = false
       try {
         p.removeLink(link)
       } catch {
