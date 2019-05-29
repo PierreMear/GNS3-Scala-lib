@@ -141,7 +141,7 @@ class Tests_Topology {
       val proj_id = p.ProjectId
       assert(check != "[]", "The project 'projSL' should have been created")
 
-      p.addTopology(new topologies.RingNetwork(objectTypes.LocalHub("PC1"),List(objectTypes.LocalHub("PC2"),objectTypes.LocalHub("PC3"),objectTypes.LocalHub("PC4"),objectTypes.LocalHub("PC5"),objectTypes.LocalHub("PC6"))))
+      p.addTopology(new topologies.StarLinearNetwork(objectTypes.LocalHub("PC1"),List(objectTypes.LocalHub("PC2"),objectTypes.LocalHub("PC3"),objectTypes.LocalHub("PC4"),objectTypes.LocalHub("PC5"),objectTypes.LocalHub("PC6"))))
       
       var res_nodes = ""
       var res_links = ""
@@ -177,7 +177,7 @@ class Tests_Topology {
       val proj_id = p.ProjectId
       assert(check != "[]", "The project 'projStar' should have been created")
 
-      p.addTopology(new topologies.RingNetwork(objectTypes.LocalHub("PC1"),List(objectTypes.LocalHub("PC2"),objectTypes.LocalHub("PC3"),objectTypes.LocalHub("PC4"),objectTypes.LocalHub("PC5"),objectTypes.LocalHub("PC6"))))
+      p.addTopology(new topologies.StarNetwork(objectTypes.LocalHub("PC1"),List(objectTypes.LocalHub("PC2"),objectTypes.LocalHub("PC3"),objectTypes.LocalHub("PC4"),objectTypes.LocalHub("PC5"),objectTypes.LocalHub("PC6"))))
       
       var res_nodes = ""
       var res_links = ""
@@ -213,7 +213,7 @@ class Tests_Topology {
       val proj_id = p.ProjectId
       assert(check != "[]", "The project 'projSR' should have been created")
 
-      p.addTopology(new topologies.RingNetwork(objectTypes.LocalHub("PC1"),List(objectTypes.LocalHub("PC2"),objectTypes.LocalHub("PC3"),objectTypes.LocalHub("PC4"),objectTypes.LocalHub("PC5"),objectTypes.LocalHub("PC6"))))
+      p.addTopology(new topologies.StarRingNetwork(objectTypes.LocalHub("PC1"),List(objectTypes.LocalHub("PC2"),objectTypes.LocalHub("PC3"),objectTypes.LocalHub("PC4"),objectTypes.LocalHub("PC5"),objectTypes.LocalHub("PC6"))))
       
       var res_nodes = ""
       var res_links = ""
