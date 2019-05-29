@@ -70,7 +70,7 @@ class Test_Basic {
       try {
         proj_id_test = projEmptyTest.getProjectId("projEmpty2")
       } catch {
-        case exc: Exception => throw new Exception("Error : \n" + exc.printStackTrace()) 
+        case exc: Exception => println("Error : \n" + exc.printStackTrace()) 
       }
       
       projEmptyTest.deleteProject(proj_id)
