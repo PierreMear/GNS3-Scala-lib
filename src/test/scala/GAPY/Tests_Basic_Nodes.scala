@@ -136,4 +136,60 @@ class Tests_Basic_Nodes {
       check = checkProjectsAPI("")
       assert(check == "[]", "The project 'projNode' should have been destroyed")
     }
+
+    // On test le removeLink
+    @Test
+    def testProjecRemoveLink() = {
+      val projRL = new GNS3_Manager(returnServerAddress())
+      val p = projRL.createProject("projRL")
+      var check = checkProjectsAPI("")
+      val proj_id = p.ProjectId
+      assert(check != "[]", "The project 'projRL' should have been created")
+
+      val one = objectTypes.LocalSwitch("Ultima")
+      val two = objectTypes.LocalSwitch("Anima")
+      
+      p.addNode(one).addNode(two)
+
+      var returned = checkProjectsAPI("/" + proj_id + "/nodes" )
+      val one_name = JSONApi.parseJSONArray(returned).getFromArray(0).getFromObject("name").value[String]
+      val two_name = JSONApi.parseJSONArray(returned).getFromArray(1).getFromObject("name").value[String]
+      val one_id = JSONApi.parseJSONArray(returned).getFromArray(0).getFromObject("node_id").value[String]
+      val two_id = JSONApi.parseJSONArray(returned).getFromArray(1).getFromObject("node_id").value[String]
+
+      val link = objectTypes.SimpleLink(one, two, 0 , 0)
+
+      p.addLink(link)
+
+      returned = checkProjectsAPI("/" + proj_id + "/links" )
+      
+      val resultsLinks =     JSONApi.parseJSONArray(returned).getFromArray(0).getFromObject("nodes").getFromArray(0).getFromObject("node_id").value[String]
+      val resultsLinks_bis = JSONApi.parseJSONArray(returned).getFromArray(0).getFromObject("nodes").getFromArray(1).getFromObject("node_id").value[String]
+
+      p.removeLink(link)
+
+      // On test que si on reremove le link, le projectManager lance une erreur linkNotfound
+      good_error = false
+      try {
+        p.removeLink(link)
+      } catch {
+        case ext: GAPY.GNS3_Exceptions.LinkNotFoundException => good_error = true
+        case exc: Exception => throw new Exception("Error : \n" + exc.printStackTrace()) 
+      }
+      
+    
+      returned = checkProjectsAPI("/" + proj_id + "/links" )
+
+      projRL.deleteProject(proj_id) 
+
+      assert(good_error, "The code should have raised a NodeNotFoundException ! We created a link with a non-existing node")
+      assert(resultsLinks == one_id, "The first node of the link should have been "+ one_id + " and had " + resultsLinks)
+      assert(resultsLinks_bis == two_id, "The second node of the link should have been "+ two_id + " and had " + resultsLinks_bis)
+      assert(returned == "[]", "The link should have been destroyed but received : " + returned)
+      check = checkProjectsAPI("")
+      assert(check == "[]", "The project 'projRL' should have been destroyed")
+    }
+
+
+
 }
