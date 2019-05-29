@@ -107,6 +107,7 @@ class Tests_Basic_Nodes {
       assert(check != "[]", "The project 'projNode' should have been created")
 
       val unique = objectTypes.LocalSwitch("Galatron")
+      val two = objectTypes.LocalSwitch("RNG")
       p.addNode(unique)
 
       // On test que l'ajout d'un lien impossible rend bien la bonne erreur
