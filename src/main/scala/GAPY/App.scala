@@ -1,10 +1,10 @@
-package GAPY
+package gapy
 
-import GAPY.topologies._
-import GAPY.objectTypes._
+import gapy.topologies._
+import gapy.objectTypes._
 
 object App {
-  
+
   def main(args : Array[String]) {
     val p = new ProjectManager("50392e51-1334-49e6-858a-1649e22badf7","http://localhost:3080")
     p.addTopology(new StarNetwork(LocalHub("LocalHub1"),List(LocalVpcs("PC0-0"),LocalVpcs("PC0-1"),LocalVpcs("PC0-2"),LocalVpcs("PC0-3"),LocalVpcs("PC0-4"),LocalVpcs("PC0-5"))))
@@ -31,7 +31,7 @@ object App {
     .addLink(SimpleLink(LocalVpcs("PC3"), LocalHub("LocalHub"), 0, 2))
     .addLink(SimpleLink(LocalVpcs("PC4"), LocalHub("LocalHub"), 0, 3))
     .layout()*/
-    
+
     /*val gnsManager:GNS3_Manager = new GNS3_Manager("http://localhost:3080")
     gnsManager
     .createProject("copied")

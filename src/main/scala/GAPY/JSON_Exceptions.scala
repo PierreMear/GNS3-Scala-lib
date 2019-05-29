@@ -1,4 +1,4 @@
-package GAPY
+package gapy
 
 
 object JSON_Exceptions {

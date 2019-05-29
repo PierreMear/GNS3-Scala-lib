@@ -1,4 +1,4 @@
-package GAPY.forcelayout
+package gapy.forcelayout
 
 /**
  * A node in the force layout simulation. The node has an immutable component, representing the actual

@@ -1,4 +1,4 @@
-package GAPY.forcelayout
+package gapy.forcelayout
 
 /**
  * An edge in the force layout simulation.

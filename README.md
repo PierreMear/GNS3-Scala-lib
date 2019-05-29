@@ -14,7 +14,7 @@ This project is the one and only achievement of the GAPY team.
 
 ## Installation
 
-Download or clone the project then use `mvn -Dmaven.test.skip=true package` to produce the JAR. Then all you have to do is to add the JAR to your project. The jar is created with most of its depedencies built-in. To make it work, be sure to have the Scala library. 
+Download or clone the project then use `mvn -Dmaven.test.skip=true package` to produce the JAR. Then all you have to do is to add the JAR to your project. The jar is created with most of its depedencies built-in. To make it work, be sure to have the Scala library.
 
 ## Usage
 
@@ -22,9 +22,9 @@ Here is an example on how to use the library in Scala to create a project, add a
 You will find a Java example [here](https://github.com/PierreMear/GNS3-Scala-lib/blob/master/java-example.md)
 
 ```scala
-import GAPY.GNS3_Manager
-import GAPY.objectTypes.{LocalHub, LocalVpcs, SimpleLink}
-import GAPY.topologies.StarNetwork
+import gapy.GNS3_Manager
+import gapy.objectTypes.{LocalHub, LocalVpcs, SimpleLink}
+import gapy.topologies.StarNetwork
 
 object App {
 
@@ -53,9 +53,9 @@ You can find more information on the nodes and links [here](https://github.com/P
 We also created templates for commonly used topologies, in the previous example we used a Star Network. Here is how you can create the same network faster
 
 ```scala
-import GAPY.GNS3_Manager
-import GAPY.objectTypes.{LocalHub, LocalVpcs, SimpleLink}
-import GAPY.topologies.StarNetwork
+import gapy.GNS3_Manager
+import gapy.objectTypes.{LocalHub, LocalVpcs, SimpleLink}
+import gapy.topologies.StarNetwork
 
 object App {
 

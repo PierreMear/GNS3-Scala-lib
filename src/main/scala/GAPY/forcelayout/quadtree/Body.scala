@@ -1,6 +1,6 @@
-package GAPY.forcelayout.quadtree
+package gapy.forcelayout.quadtree
 
-import GAPY.forcelayout.Vector2D
+import gapy.forcelayout.Vector2D
 
 /**
  * A body in the quadtree.

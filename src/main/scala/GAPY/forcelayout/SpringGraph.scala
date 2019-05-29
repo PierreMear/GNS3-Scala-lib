@@ -1,6 +1,6 @@
-package GAPY.forcelayout
+package gapy.forcelayout
 
-import GAPY.forcelayout.quadtree.{ Body, Quad, QuadTree }
+import gapy.forcelayout.quadtree.{ Body, Quad, QuadTree }
 
 import scala.collection.parallel.ParSeq
 

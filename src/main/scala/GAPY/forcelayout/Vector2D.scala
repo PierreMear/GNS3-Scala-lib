@@ -1,4 +1,4 @@
-package GAPY.forcelayout
+package gapy.forcelayout
 
 import scala.util.Random
 

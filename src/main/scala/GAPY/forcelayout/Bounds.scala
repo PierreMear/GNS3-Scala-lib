@@ -1,4 +1,4 @@
-package GAPY.forcelayout
+package gapy.forcelayout
 
 /**
  * 2D bounds, plus some convenience methods.
