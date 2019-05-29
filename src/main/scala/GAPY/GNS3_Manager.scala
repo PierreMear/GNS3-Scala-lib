@@ -58,11 +58,7 @@ class GNS3_Manager(val serverAddress:String, val username:String = "", val passw
    * @throws ConflictException if there is a conflict with an other project
    */
   def deleteProject(projectId: String) : GNS3_Manager = {
-<<<<<<< HEAD
     val returned = RESTApi.delete("/v2/projects/" + projectId, serverAddress,this.username,this.password)
-=======
-    val returned = RESTApi.delete("/v2/projects/" + projectId, serverAddress,serverAddress,this.username,this.password)
->>>>>>> typo fix
     if (returned != ""){
       JSONApi.parseJSONObject(returned).getFromObject("message");
       if(!JSONApi.isNullPointer()) {
