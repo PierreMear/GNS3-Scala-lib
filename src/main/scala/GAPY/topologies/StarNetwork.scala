@@ -1,7 +1,7 @@
-package topologies
+package GAPY.topologies
 
 import GAPY.ProjectManager
-import objectTypes._
+import GAPY.objectTypes._
 
 class StarNetwork(val center:Node, val devices:List[Node]) extends Topology{
   override def create(projectManager:ProjectManager): Unit = {
