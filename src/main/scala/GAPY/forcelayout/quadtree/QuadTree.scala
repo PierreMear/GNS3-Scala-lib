@@ -1,6 +1,6 @@
-package GAPY.forcelayout.quadtree
+package gapy.forcelayout.quadtree
 
-import GAPY.forcelayout.{ Bounds, Vector2D }
+import gapy.forcelayout.{ Bounds, Vector2D }
 
 /**
  * An immutable quadtree implementation.

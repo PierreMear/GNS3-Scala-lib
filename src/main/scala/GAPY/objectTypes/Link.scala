@@ -1,4 +1,4 @@
-package GAPY.objectTypes
+package gapy.objectTypes
 
 /**
  * @author Gwandalff

@@ -1,19 +1,19 @@
-package GAPY
+package gapy
 
 import scalaj.http._
-import org.json.simple._ 
+import org.json.simple._
 
 /**
  * REST API request object
  * Use this object to make easier HTTP requests
- * 
+ *
  * @author Gwandalff
  */
 object RESTApi {
-  
+
   /**
    * get : do a GET http request on a server at a specific URL
-   * 
+   *
    * @param url the URL of the page on the server
    * @param serverAdress the server address(with port ex: 127.0.0.1:8080)
    * @return the body of the page requested
@@ -26,7 +26,7 @@ object RESTApi {
 
   /**
    * post : do a POST http request on a server at a specific URL
-   * 
+   *
    * @param url the URL of the page on the server
    * @param body the data to send(often in JSON)
    * @param serverAdress the server address(with port ex: 127.0.0.1:8080)
@@ -37,10 +37,10 @@ object RESTApi {
     val response: HttpResponse[String] = http.postData(body).asString
     return response.body
   }
-  
+
   /**
    * delete : do a DELETE http request on a server at a specific URL
-   * 
+   *
    * @param url the URL of the page on the server
    * @param serverAdress the server address(with port ex: 127.0.0.1:8080)
    * @return the body of the page requested
@@ -50,10 +50,10 @@ object RESTApi {
     val response: HttpResponse[String] = http.method("delete").asString
     return response.body
   }
-  
+
   /**
    * put : do a PUT http request on a server at a specific URL
-   * 
+   *
    * @param url the URL of the page on the server
    * @param body the data to send(often in JSON)
    * @param serverAdress the server address(with port ex: 127.0.0.1:8080)

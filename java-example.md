@@ -5,9 +5,9 @@ Here is an example on how to use the library in Java to create a project, add a 
 However this library is meant to be used in Scala and is not comfortable to use in Java
 
 ```java
-import GAPY.GNS3_Manager;
-import GAPY.ProjectManager;
-import GAPY.objectTypes.*;
+import gapy.GNS3_Manager;
+import gapy.ProjectManager;
+import gapy.objectTypes.*;
 
 public class Main {
 
