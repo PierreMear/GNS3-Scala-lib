@@ -147,8 +147,8 @@ class Test_Basic {
       var res_links = ""
       try {
         p_bis.copyProject(p)
-        val returned_nodes = checkProjectsAPI("/" + proj_id + "/nodes" )
-        val returned_links = checkProjectsAPI("/" + proj_id + "/links" )
+        val returned_nodes = checkProjectsAPI("/" + proj_id_bis + "/nodes" )
+        val returned_links = checkProjectsAPI("/" + proj_id_bis + "/links" )
         res_nodes = JSONApi.parseJSONArray(returned_nodes).getFromArray(5).getFromObject("name").value[String]
         res_links = JSONApi.parseJSONArray(returned_links).getFromArray(4).getFromObject("link_id").value[String]
       } catch {
@@ -162,6 +162,39 @@ class Test_Basic {
       assert(res_links != null, "The last link created should have the 2n-3 th but it doesn't exist, res = " + res_links)
       assert(check == "[]", "The projects 'projCopy' and 'projCopy_bis' should have been destroyed")
       assert(!shouldnt, "A error happened during the Copy, please check ealier logs")
+    }
+
+    @Test
+    def testlayout() = {
+      val projLayout = new GNS3_Manager(returnServerAddress())
+      val p = projLayout.createProject("projLayout")
+      var check = checkProjectsAPI("")
+      val proj_id = p.ProjectId
+      assert(check != "[]", "The project 'projLayout' should have been created")
+
+      p.addTopology(new topologies.StarNetwork(objectTypes.LocalHub("PC1"),List(objectTypes.LocalVpcs("PC2"),objectTypes.LocalVpcs("PC3"),objectTypes.LocalVpcs("PC4"),objectTypes.LocalVpcs("PC5"),objectTypes.LocalVpcs("PC6"))))
+
+      var shouldnt = false
+      var res_nodes = ""
+      var res_links = ""
+      try {
+        p.layout(6, 500)
+        val returned_nodes = checkProjectsAPI("/" + proj_id + "/nodes" )
+        val returned_links = checkProjectsAPI("/" + proj_id + "/links" )
+        res_nodes = JSONApi.parseJSONArray(returned_nodes).getFromArray(5).getFromObject("name").value[String]
+        res_links = JSONApi.parseJSONArray(returned_links).getFromArray(4).getFromObject("link_id").value[String]
+        p.layout
+      } catch {
+        case ex: Exception => println("Erreur " + ex.printStackTrace()) ; shouldnt = true
+      }
+
+      projCopy.deleteProject(proj_id)
+      projCopy.deleteProject(proj_id_bis)
+      check = checkProjectsAPI("")
+      assert(res_nodes == "PC6", "The last node created should have been PC6 and not " + res_nodes)
+      assert(res_links != null, "The last link created should have the 2n-3 th but it doesn't exist, res = " + res_links)
+      assert(check == "[]", "The project 'projLayout' should have been destroyed")
+      assert(!shouldnt, "A error happened during the layout, please check ealier logs")
     }
 
 
