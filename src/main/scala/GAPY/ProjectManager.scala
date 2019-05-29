@@ -20,7 +20,7 @@ import GAPY.GNS3_Exceptions._
  * @param ProjectId the ID of the project we want to work on
  * @param serverAddress the address of the GNS3 server(with port ex: 127.0.0.1:3080)
  */
-class ProjectManager(val ProjectId: String, val serverAddress:String, val username:String = "", val password:String = "") {
+class ProjectManager(val ProjectId: String, val serverAddress:String, val username:String, val password:String) {
 
     // Map Node/ID of the nodes in this project
     private val nodesId = Map[objectTypes.Node,String]()
@@ -68,14 +68,8 @@ class ProjectManager(val ProjectId: String, val serverAddress:String, val userna
       if(nodesId.filter((entry) => entry._1.name == a.name).size > 0){
         throw NodeNameConflictException("Conflict in nodes names : an other node already have this name -> " + a.name)
       }
-<<<<<<< HEAD
-      val returned = RESTApi.get("/v2/appliances",serverAddress)
-      val appliances = JSONApi.parseJSONArray(returned).value[JSONArray].toArray()
-      println(appliances)
-=======
       val returned = RESTApi.get("/v2/appliances",serverAddress,serverAddress,this.username,this.password)
       val appliances = JSONApi.parseJSONArray(returned).value[JSONArray]
->>>>>>> trying to add an optionnal authentification to gns3 server
       var applianceID:String = ""
       for(obj_appliance <- appliances){
         val appliance = obj_appliance.asInstanceOf[JSONObject]
@@ -84,12 +78,7 @@ class ProjectManager(val ProjectId: String, val serverAddress:String, val userna
           applianceID = appliance.get("appliance_id").asInstanceOf[String]
         }
       }
-<<<<<<< HEAD
-      val createdNode = RESTApi.post("/v2/projects/" + ProjectId + "/appliances/" + applianceID, "{}", serverAddress)
-      println(createdNode)
-=======
       val createdNode = RESTApi.post("/v2/projects/" + ProjectId + "/appliances/" + applianceID, "{}", serverAddress,serverAddress,this.username,this.password)
->>>>>>> trying to add an optionnal authentification to gns3 server
       JSONApi.parseJSONObject(createdNode).getFromObject("node_id")
       appliancesId += (a -> JSONApi.value[String])
       nodesId += (a -> JSONApi.value[String])
