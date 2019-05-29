@@ -41,7 +41,7 @@ class Tests_Topology {
       var boolean_error = false
       try {
 
-        returned_3 = checkProjectsAPI("/" + proj_id + "/links" )
+        val returned_3 = checkProjectsAPI("/" + proj_id + "/links" )
         val obj = JSONApi.parseJSONArray(returned_3).value[JSONArray]
         println(obj.toJSONString())
         res_nodes = JSONApi.parseJSONArray(returned_nodes).getFromArray(5).getFromObject("name").value[String]
