@@ -72,3 +72,7 @@ object App {
 ```
 
 If you want to learn more on the different topology templates you can look [here](https://github.com/PierreMear/GNS3-Scala-lib/blob/master/topologies-scala.md).
+
+## License
+
+*GNS3-Scala-Lib* is released under the [MIT License](https://github.com/PierreMear/GNS3-Scala-lib/blob/master/LICENSE.txt)
