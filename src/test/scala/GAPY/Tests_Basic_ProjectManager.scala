@@ -75,7 +75,7 @@ class Test_Basic {
       
       projEmptyTest.deleteProject(proj_id)
       assert(proj_id == proj_id_test, "The project id returned by getprojectId() isn't the same ID ! Id returned : " + proj_id_test + " and should have been " + proj_id)
-
+      check = checkProjectsAPI()
       assert(check == "[]", "The project 'projEmpty2' should have been destroyed")
     }
 
