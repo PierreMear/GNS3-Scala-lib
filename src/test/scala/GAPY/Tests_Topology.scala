@@ -152,7 +152,7 @@ class Tests_Topology {
 
         val returned_check = checkProjectsAPI("/" + proj_id + "/links" )
         val obj = JSONApi.parseJSONArray(returned_check).value[JSONArray]
-        println(obj.toJSONString())
+        //println(obj.toJSONString())
         res_nodes = JSONApi.parseJSONArray(returned_nodes).getFromArray(5).getFromObject("name").value[String]
         res_links = JSONApi.parseJSONArray(returned_links).getFromArray(8).getFromObject("link_id").value[String]
        
@@ -190,7 +190,7 @@ class Tests_Topology {
         val obj = JSONApi.parseJSONArray(returned_check).value[JSONArray]
         //println(obj.toJSONString())
         res_nodes = JSONApi.parseJSONArray(returned_nodes).getFromArray(5).getFromObject("name").value[String]
-        res_links = JSONApi.parseJSONArray(returned_links).getFromArray(5).getFromObject("link_id").value[String]
+        res_links = JSONApi.parseJSONArray(returned_links).getFromArray(4).getFromObject("link_id").value[String]
        
       } catch {
         case ex: Exception => print("Error : " + ex.printStackTrace()) ; boolean_error = true
