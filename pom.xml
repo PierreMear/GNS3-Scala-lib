@@ -9,7 +9,7 @@
   <licenses>
     <license>
       <name>My License</name>
-      <url>http://....</url>
+      <url>https://github.com/PierreMear/GNS3-Scala-lib/LICENSE.txt</url>
       <distribution>repo</distribution>
     </license>
   </licenses>
@@ -41,7 +41,7 @@
 		<artifactId>json-simple</artifactId>
 		<version>1.1.1</version>
 	</dependency>
-	
+
 	<dependency>
     	<groupId>com.propensive</groupId>
     	<artifactId>rapture-io</artifactId>

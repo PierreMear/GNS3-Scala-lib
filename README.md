@@ -4,6 +4,8 @@ GNS3 API DOCUMENTATION : http://api.gns3.net/en/2.0/
 
 GNS3 API DEMO : http://api.gns3.net/en/2.0/curl.html
 
+This library uses another library to lay out automatically the networks generated, you can find it [here](https://github.com/rsimon/scala-force-layout) 
+
 ## Description
 
 The goal of the GNS3-Scala-lib library is to use the GNS3 API and make it scriptale. GNS3 is mostly used with it's GUI but it's a lot of clicks and buttons and cannot be used for auto testing. This library uses the GNS3 API and allows you to create networks from Scala scripts.
