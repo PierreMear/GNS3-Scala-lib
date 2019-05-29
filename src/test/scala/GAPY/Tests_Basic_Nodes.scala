@@ -72,8 +72,22 @@ class Tests_Basic_Nodes {
       returned = checkProjectsAPI("/" + proj_id + "/links" )
       val obj = JSONApi.parseJSONArray(returned).value[JSONArray]
       println(obj.toJSONString()) //On print les données pour observer la structure du document renvoyé
-      
-      
+
+      // On test si la node Hube Hyrule est bien au centre du layout avec les non bis
+      val resultsLinks_one =     JSONApi.parseJSONArray(returned).getFromArray(0).getFromObject("nodes").getFromArray(0).getFromObject("node_id").value[String]
+      val resultsLinks_one_bis = JSONApi.parseJSONArray(returned).getFromArray(0).getFromObject("nodes").getFromArray(1).getFromObject("node_id").value[String]
+      val resultsLinks_two =     JSONApi.parseJSONArray(returned).getFromArray(1).getFromObject("nodes").getFromArray(0).getFromObject("node_id").value[String]
+      val resultsLinks_two_bis = JSONApi.parseJSONArray(returned).getFromArray(1).getFromObject("nodes").getFromArray(1).getFromObject("node_id").value[String]
+      val resultsLinks_thr =     JSONApi.parseJSONArray(returned).getFromArray(2).getFromObject("nodes").getFromArray(0).getFromObject("node_id").value[String]
+      val resultsLinks_thr_bis = JSONApi.parseJSONArray(returned).getFromArray(2).getFromObject("nodes").getFromArray(1).getFromObject("node_id").value[String]
+      assert(resultsLinks_one == id_hyrule, "Link detected but not the one we were waiting for")
+      assert(resultsLinks_two == id_hyrule, "Link detected but not the one we were waiting for")
+      assert(resultsLinks_thr == id_hyrule, "Link detected but not the one we were waiting for")
+
+      //On test si le hub est bien connecté aux autres
+      assert(resultsLinks_one_bis == id_ganon, "Link detected but not the one we were waiting for")
+      assert(resultsLinks_two_bis == id_zelda, "Link detected but not the one we were waiting for")
+      assert(resultsLinks_thr_bis == id_link, "Link detected but not the one we were waiting for")
       
       projNodeTest.deleteProject(proj_id) 
       check = checkProjectsAPI("")
