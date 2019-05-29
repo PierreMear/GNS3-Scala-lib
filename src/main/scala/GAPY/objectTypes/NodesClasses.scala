@@ -1,8 +1,8 @@
-package objectTypes
+package GAPY.objectTypes
 
 /**
  * @author Gwandalff
- * 
+ *
  * Case classes representing built-in nodes
  */
 

@@ -1,7 +1,7 @@
 package GAPY
 
-import topologies._
-import objectTypes._
+import GAPY.topologies._
+import GAPY.objectTypes._
 
 object App {
   
