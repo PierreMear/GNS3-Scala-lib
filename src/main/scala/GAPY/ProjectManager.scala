@@ -282,7 +282,7 @@ class ProjectManager(val ProjectId: String, val serverAddress:String, val userna
         val x:Int = n.state.pos.x.toInt * scale
         val y:Int = n.state.pos.y.toInt * scale
         val body = "{\"x\":"+x+",\"y\":"+y+"}"
-        RESTApi.put("/v2/projects/" + ProjectId + "/nodes/"+n.id, body, serverAddress)
+        RESTApi.put("/v2/projects/" + ProjectId + "/nodes/"+n.id, body, serverAddress,this.username,this.password)
       }
       this
     }
