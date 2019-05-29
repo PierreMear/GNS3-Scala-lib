@@ -70,17 +70,14 @@ class ProjectManager(val ProjectId: String, val serverAddress:String) {
       }
       val returned = RESTApi.get("/v2/appliances",serverAddress)
       val appliances = JSONApi.parseJSONArray(returned).value[JSONArray].toArray()
-      println(appliances)
       var applianceID:String = ""
       for(obj_appliance <- appliances){
         val appliance = obj_appliance.asInstanceOf[JSONObject]
-	println(appliance)
         if(appliance.get("name").asInstanceOf[String] == a.appliance_name){
           applianceID = appliance.get("appliance_id").asInstanceOf[String]
         }
       }
-      val createdNode = RESTApi.post("/v2/projects/" + ProjectId + "/appliances/" + applianceID, "{}", serverAddress)
-      println(createdNode)
+      val createdNode = RESTApi.post("/v2/projects/" + ProjectId + "/appliances/" + applianceID, "{\"x\":0,\"y\":0}", serverAddress)
       JSONApi.parseJSONObject(createdNode).getFromObject("node_id")
       appliancesId += (a -> JSONApi.value[String])
       nodesId += (a -> JSONApi.value[String])
