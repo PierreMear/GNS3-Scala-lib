@@ -68,13 +68,8 @@ class ProjectManager(val ProjectId: String, val serverAddress:String, val userna
       if(nodesId.filter((entry) => entry._1.name == a.name).size > 0){
         throw NodeNameConflictException("Conflict in nodes names : an other node already have this name -> " + a.name)
       }
-<<<<<<< HEAD
-      val returned = RESTApi.get("/v2/appliances",serverAddress,serverAddress,this.username,this.password)
-      val appliances = JSONApi.parseJSONArray(returned).value[JSONArray].toArray()
-=======
       val returned = RESTApi.get("/v2/appliances",serverAddress,this.username,this.password)
-      val appliances = JSONApi.parseJSONArray(returned).value[JSONArray]
->>>>>>> fix : too many arguments in all RESTApi functions call
+      val appliances = JSONApi.parseJSONArray(returned).value[JSONArray].toArray()
       var applianceID:String = ""
       for(obj_appliance <- appliances){
         val appliance = obj_appliance.asInstanceOf[JSONObject]
@@ -82,15 +77,7 @@ class ProjectManager(val ProjectId: String, val serverAddress:String, val userna
           applianceID = appliance.get("appliance_id").asInstanceOf[String]
         }
       }
-<<<<<<< HEAD
-<<<<<<< HEAD
-      val createdNode = RESTApi.post("/v2/projects/" + ProjectId + "/appliances/" + applianceID, "{\"x\":0,\"y\":0}", serverAddress)
-=======
-      val createdNode = RESTApi.post("/v2/projects/" + ProjectId + "/appliances/" + applianceID, "{\"x\":0,\"y\":0}", serverAddress,serverAddress,this.username,this.password)
->>>>>>> trying to add an optionnal authentification to gns3 server
-=======
-      val createdNode = RESTApi.post("/v2/projects/" + ProjectId + "/appliances/" + applianceID, "{}", serverAddress,this.username,this.password)
->>>>>>> fix : too many arguments in all RESTApi functions call
+      val createdNode = RESTApi.post("/v2/projects/" + ProjectId + "/appliances/" + applianceID, "{\"x\":0,\"y\":0}",serverAddress,this.username,this.password)
       JSONApi.parseJSONObject(createdNode).getFromObject("node_id")
       appliancesId += (a -> JSONApi.value[String])
       nodesId += (a -> JSONApi.value[String])
