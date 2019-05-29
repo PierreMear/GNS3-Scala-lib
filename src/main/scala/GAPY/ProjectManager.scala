@@ -68,7 +68,11 @@ class ProjectManager(val ProjectId: String, val serverAddress:String, val userna
       if(nodesId.filter((entry) => entry._1.name == a.name).size > 0){
         throw NodeNameConflictException("Conflict in nodes names : an other node already have this name -> " + a.name)
       }
+<<<<<<< HEAD
       val returned = RESTApi.get("/v2/appliances",serverAddress,serverAddress,this.username,this.password)
+=======
+      val returned = RESTApi.get("/v2/appliances",serverAddress,this.username,this.password)
+>>>>>>> remove conflicts marquers
       val appliances = JSONApi.parseJSONArray(returned).value[JSONArray]
       var applianceID:String = ""
       for(obj_appliance <- appliances){
