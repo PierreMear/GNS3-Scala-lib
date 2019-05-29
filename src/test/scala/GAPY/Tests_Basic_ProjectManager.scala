@@ -84,7 +84,7 @@ class Test_Basic {
       // On test la ConflictException de création de projet 
       var good_error = false
       try {
-        w = projError.createProject("projError")
+        val w = projError.createProject("projError")
       } catch {
         case ext: GAPY.GNS3_Exceptions.ConflictException => good_error = true
         case exc: Exception => throw new Exception("Error : \n" + exc.printStackTrace()) 
@@ -94,14 +94,14 @@ class Test_Basic {
       // On test la ConflictException de création de projet 
       good_error = false
       try {
-        p.deleteProject(proj_id + "42")
+        projError.deleteProject(proj_id + "42")
       } catch {
         case ext: GAPY.GNS3_Exceptions.NotFoundException => good_error = true
         case exc: Exception => throw new Exception("Error : \n" + exc.printStackTrace()) 
       }
       assert(good_error, "The code should have raised a NotFoundExceptions ! We deleted a project that doesn't exist")
 
-      projEmptyTest.deleteProject(proj_id)
+      projError.deleteProject(proj_id)
       assert(check == "[]", "The project 'projError' should have been destroyed")
 
     }
