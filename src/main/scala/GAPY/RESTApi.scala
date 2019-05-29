@@ -20,7 +20,7 @@ object RESTApi {
    */
   def get(url: String, serverAddress:String, user:String, pass:String): String = {
     var http = Http(serverAddress + url)
-    if(user == "" && pass == "") http = Http(serverAddress + url).headers(("Authorization: Basic",user+ ":" + pass))
+    if(!(user == "" && pass == "")) http = Http(serverAddress + url).headers(("Authorization: Basic",user+ ":" + pass))
     val response: HttpResponse[String] = http.asString
     return response.body
   }
@@ -35,7 +35,7 @@ object RESTApi {
    */
   def post(url: String, body: String, serverAddress:String, user:String, pass:String): String = {
     var http = Http(serverAddress + url)
-    if (user == "" && pass == "") http = Http(serverAddress + url).headers(("Authorization: Basic",user+ ":" + pass))
+    if (!(user == "" && pass == "")) http = Http(serverAddress + url).headers(("Authorization: Basic",user+ ":" + pass))
     val response: HttpResponse[String] = http.postData(body).asString
     return response.body
   }
@@ -64,7 +64,7 @@ object RESTApi {
    */
   def put(url: String, body:String, serverAddress:String, user:String, pass:String): String = {
     var http = Http(serverAddress + url)
-    if(user == "" && pass == "") http = Http(serverAddress + url).headers(("Authorization: Basic",user+ ":" + pass))
+    if(!(user == "" && pass == "")) http = Http(serverAddress + url).headers(("Authorization: Basic",user+ ":" + pass))
     val response: HttpResponse[String] = http.postData(body).method("put").asString
     return response.body
   }
