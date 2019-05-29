@@ -20,7 +20,7 @@ import GAPY.GNS3_Exceptions._
  * @param ProjectId the ID of the project we want to work on
  * @param serverAddress the address of the GNS3 server(with port ex: 127.0.0.1:3080)
  */
-class ProjectManager(val ProjectId: String, val serverAddress:String, val username:String, val password:String) {
+class ProjectManager(val ProjectId: String, val serverAddress:String, val username:String = "", val password:String = "") {
 
     // Map Node/ID of the nodes in this project
     private val nodesId = Map[objectTypes.Node,String]()
