@@ -285,4 +285,23 @@ class ProjectManager(val ProjectId: String, val serverAddress:String) {
       }
       this
     }
+    
+    /**
+     * clean : delete all the nodes and links in the project
+     * 
+     * @return {@link ProjectManager} to be fluent
+     */
+    def clean() : ProjectManager = {
+      for(node:objectTypes.Node <- nodesId.keys){
+        this.removeNode(node)
+      }
+      this
+    }
+    
+    /**
+     * delete : delete the current project
+     */
+    def delete() : Unit = {
+      var returned = RESTApi.delete("/v2/projects/" + ProjectId,serverAddress)
+    }
 }
