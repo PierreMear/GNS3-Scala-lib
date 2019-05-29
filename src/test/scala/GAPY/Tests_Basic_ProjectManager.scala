@@ -66,7 +66,13 @@ class Test_Basic {
       val proj_id = p.ProjectId
       assert(check != "[]", "The project 'projEmpty2' should have been created")
 
-      val proj_id_test = projEmptyTest.getProjectId("projEmpty2")
+      var proj_id_test = ""
+      try {
+        proj_id_test = projEmptyTest.getProjectId("projEmpty2")
+      } catch {
+        case exc: Exception => throw new Exception("Error : \n" + exc.printStackTrace()) 
+      }
+      
       projEmptyTest.deleteProject(proj_id)
       assert(proj_id == proj_id_test, "The project id returned by getprojectId() isn't the same ID ! Id returned : " + proj_id_test + " and should have been " + proj_id)
 
