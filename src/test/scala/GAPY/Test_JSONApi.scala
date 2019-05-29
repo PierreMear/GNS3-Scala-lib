@@ -28,11 +28,11 @@ class Test_JSONApi {
     @Test
     def JSONError() = {
 
-        val returned = checkProjectsAPI("https://jsonplaceholder.typicode.com/todos/1")
+        val returned = checkProjectsAPI("https://jsonplaceholder.typicode.com/todos")
 
         var should = false
         try {
-            val obj_fail = JSONApi.parseJSONObject(returned).getFromArray(0)
+            val obj_fail = JSONApi.parseJSONArray.getFromObject("id")
         } catch {
             case ev: JSON_Exceptions.JSONCastError => should = true
             case ex: Exception => println("Erreur " + ex.printStackTrace())
