@@ -87,7 +87,7 @@ class Tests_Topology {
       } catch {
         case ex: Exception => print("Error : " + ex.printStackTrace()) ; boolean_error = true
       }
-      projFC.deleteProject(proj_id) 
+      projL.deleteProject(proj_id) 
       assert(res_nodes == "PC6", "The last node created should have been PC6 and not " + res_nodes)
       assert(res_links != null, "The last link created should have the n-1 th but it doesn't exist, res = " + res_links)
 
@@ -123,7 +123,7 @@ class Tests_Topology {
       } catch {
         case ex: Exception => print("Error : " + ex.printStackTrace()) ; boolean_error = true
       }
-      projFC.deleteProject(proj_id) 
+      projR.deleteProject(proj_id) 
       assert(res_nodes == "PC6", "The last node created should have been PC6 and not " + res_nodes)
       assert(res_links != null, "The last link created should have the n th but it doesn't exist, res = " + res_links)
 
@@ -159,7 +159,7 @@ class Tests_Topology {
       } catch {
         case ex: Exception => print("Error : " + ex.printStackTrace()) ; boolean_error = true
       }
-      projFC.deleteProject(proj_id) 
+      projSL.deleteProject(proj_id) 
       assert(res_nodes == "PC6", "The last node created should have been PC6 and not " + res_nodes)
       assert(res_links != null, "The last link created should have the 2n-3 th but it doesn't exist, res = " + res_links)
 
@@ -195,7 +195,7 @@ class Tests_Topology {
       } catch {
         case ex: Exception => print("Error : " + ex.printStackTrace()) ; boolean_error = true
       }
-      projFC.deleteProject(proj_id) 
+      projStar.deleteProject(proj_id) 
       assert(res_nodes == "PC6", "The last node created should have been PC6 and not " + res_nodes)
       assert(res_links != null, "The last link created should have the 2n-3 th but it doesn't exist, res = " + res_links)
 
@@ -231,7 +231,7 @@ class Tests_Topology {
       } catch {
         case ex: Exception => print("Error : " + ex.printStackTrace()) ; boolean_error = true
       }
-      projFC.deleteProject(proj_id) 
+      projSR.deleteProject(proj_id) 
       assert(res_nodes == "PC6", "The last node created should have been PC6 and not " + res_nodes)
       assert(res_links != null, "The last link created should have the 2n-3 th but it doesn't exist, res = " + res_links)
 
