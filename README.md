@@ -4,7 +4,7 @@ GNS3 API DOCUMENTATION : http://api.gns3.net/en/2.0/
 
 GNS3 API DEMO : http://api.gns3.net/en/2.0/curl.html
 
-This library uses another library to lay out automatically the networks generated, you can find it [here](https://github.com/rsimon/scala-force-layout) 
+This library uses another library to lay out automatically the networks generated, you can find it [here](https://github.com/rsimon/scala-force-layout)
 
 ## Description
 
@@ -23,8 +23,8 @@ You will find a Java example [here](https://github.com/PierreMear/GNS3-Scala-lib
 
 ```scala
 import GAPY.GNS3_Manager
-import objectTypes.{LocalHub, LocalVpcs, SimpleLink}
-import topologies.StarNetwork
+import GAPY.objectTypes.{LocalHub, LocalVpcs, SimpleLink}
+import GAPY.topologies.StarNetwork
 
 object App {
 
@@ -49,13 +49,13 @@ object App {
   }
 }
 ```
-
+You can find more information on the nodes and links [here](https://github.com/PierreMear/GNS3-Scala-lib/blob/master/nodes.md)
 We also created templates for commonly used topologies, in the previous example we used a Star Network. Here is how you can create the same network faster
 
 ```scala
 import GAPY.GNS3_Manager
-import objectTypes.{LocalHub, LocalVpcs, SimpleLink}
-import topologies.StarNetwork
+import GAPY.objectTypes.{LocalHub, LocalVpcs, SimpleLink}
+import GAPY.topologies.StarNetwork
 
 object App {
 
