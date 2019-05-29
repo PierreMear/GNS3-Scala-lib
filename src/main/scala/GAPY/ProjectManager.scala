@@ -4,7 +4,8 @@ import topologies.Topology
 
 import scalaj.http._
 import scala.collection.mutable.Map
-import org.json.simple._   
+import org.json.simple._  
+import forcelayout._
 
 import objectTypes._
 import GAPY.GNS3_Exceptions._
@@ -16,7 +17,7 @@ import GAPY.GNS3_Exceptions._
 class ProjectManager(val ProjectId: String, val serverAddress:String) {
   
     // Map Node/ID of the nodes in this project
-    private val nodesId = Map[Node,String]()
+    private val nodesId = Map[objectTypes.Node,String]()
     
     // Map Appliance/ID of the nodes in this project
     private val appliancesId = Map[Appliance,String]()
@@ -31,7 +32,7 @@ class ProjectManager(val ProjectId: String, val serverAddress:String) {
      * @param computeId : the computeId of the node
      * @return ProjectManager to be fluent
      */
-    def addNode(n:Node): ProjectManager = {
+    def addNode(n:objectTypes.Node): ProjectManager = {
       if(nodesId.filter((entry) => entry._1.name == n.name).size > 0){
         throw NodeNameConflictException("Conflict in nodes names : an other node already have this name -> " + n.name)
       }
@@ -110,7 +111,7 @@ class ProjectManager(val ProjectId: String, val serverAddress:String) {
      * @param name : the name of the node to remove
      * @return ProjectManager to be fluent
      */
-    def removeNode(n:Node): ProjectManager = {
+    def removeNode(n:objectTypes.Node): ProjectManager = {
       if(!nodesId.contains(n)){
         throw NodeNotFoundException("Node not found : you wanted to remove an innexisting node : " + n)
       }
@@ -145,7 +146,7 @@ class ProjectManager(val ProjectId: String, val serverAddress:String) {
      * @param node : node to start
      * @return ProjectManager to be fluent
      */
-    def startNode(node:Node): ProjectManager = {
+    def startNode(node:objectTypes.Node): ProjectManager = {
       if(!nodesId.contains(node)){
         throw NodeNotFoundException("Node not found : you wanted to remove an innexisting node : " + node)
       }
@@ -158,7 +159,7 @@ class ProjectManager(val ProjectId: String, val serverAddress:String) {
      * @param node : node to stop
      * @return ProjectManager to be fluent
      */
-    def stopNode(node:Node): ProjectManager = {
+    def stopNode(node:objectTypes.Node): ProjectManager = {
       if(!nodesId.contains(node)){
         throw NodeNotFoundException("Node not found : you wanted to remove an innexisting node : " + node)
       }
@@ -200,7 +201,7 @@ class ProjectManager(val ProjectId: String, val serverAddress:String) {
         applianceIDs = id :: applianceIDs
       }
       println(applianceIDs)
-      for((node:Node, id:String) <- projectManager.nodesId){
+      for((node:objectTypes.Node, id:String) <- projectManager.nodesId){
         if(!applianceIDs.contains(id)) this.addNode(node)
       }
       println(projectManager.nodesId)
@@ -209,6 +210,36 @@ class ProjectManager(val ProjectId: String, val serverAddress:String) {
         this.addLink(link)
       }
       
+      this
+    }
+    
+    def layout(scale:Int = 5, maxIteration:Int = 1000): ProjectManager = {
+      var nodes:Seq[forcelayout.Node] = Seq()
+      for((node:objectTypes.Node, id:String) <- nodesId){
+        nodes = nodes :+ Node(id,node.name,1.0,0)
+      }
+      var edges:Seq[Edge] = Seq()
+      for((link:objectTypes.Link, id:String) <- linksId){
+        var linkedNodes:List[forcelayout.Node] = List()
+        val ID1:String = nodesId.getOrElse(link.from,"")
+        val ID2:String = nodesId.getOrElse(link.to,"")
+        for(n:forcelayout.Node <- nodes){
+          if(n.id == ID1 || n.id == ID2){
+            linkedNodes = n :: linkedNodes
+          }
+        }
+        edges = edges :+ Edge(linkedNodes(0),linkedNodes(1))
+      }
+      
+      val graph:SpringGraph = new SpringGraph(nodes, edges)
+      graph.doLayout(maxIterations = maxIteration)
+      
+      for(n:forcelayout.Node <- graph.nodes){
+        val x:Int = n.state.pos.x.toInt * scale
+        val y:Int = n.state.pos.y.toInt * scale
+        val body = "{\"x\":"+x+",\"y\":"+y+"}"
+        RESTApi.put("/v2/projects/" + ProjectId + "/nodes/"+n.id, body, serverAddress)
+      }
       this
     }
 }
