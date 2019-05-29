@@ -32,7 +32,7 @@ class Test_JSONApi {
 
         var should = false
         try {
-            val obj_fail = JSONApi.parseJSONArray.getFromObject("id")
+            val obj_fail = JSONApi.parseJSONArray(returned).getFromObject("id")
         } catch {
             case ev: JSON_Exceptions.JSONCastError => should = true
             case ex: Exception => println("Erreur " + ex.printStackTrace())
