@@ -14,20 +14,24 @@ import GAPY.JSON_Exceptions.JSONCastError
  * Manage all the aspect of the project like create or delete a project
  *
  * @param serverAddress the GNS3 server address(with port ex : 127.0.0.1:3080)
+ * @param username the username used to connect to the GNS3 server
+ * @param password the password used to connect to the GNS3 server
  */
-class GNS3_Manager(val serverAddress:String) {
+class GNS3_Manager(val serverAddress:String, val username:String = "", val password:String = "") {
 
   /**
    * createProject : create a project on the server with the specified name
    *
    * @param name the name of the project we want to create
+   * @param username the username used to connect to the GNS3 server
+   * @param password the password used to connect to the GNS3 server
    * @return the project manager of the project we've just created
    * @throws NotFoundException if the project is not found
    * @throws InternalServerErrorException if an error occur on the server side
    * @throws ConflictException if a project with the same name has already been created
    */
   def createProject(name : String) : ProjectManager = {
-    val returned = RESTApi.post("/v2/projects", "{\"name\": \"" + name + "\"}",serverAddress);
+    val returned = RESTApi.post("/v2/projects", "{\"name\": \"" + name + "\"}",serverAddress,this.username,this.password)
     JSONApi.parseJSONObject(returned).getFromObject("project_id")
     val projectId = JSONApi.value[String];
     JSONApi.parseJSONObject(returned).getFromObject("message");
@@ -41,7 +45,7 @@ class GNS3_Manager(val serverAddress:String) {
         case 409 => throw new ConflictException("Conflict with existing project");
       }
     }
-    return new ProjectManager(projectId, serverAddress);
+    return new ProjectManager(projectId, serverAddress,this.username,this.password);
   }
 
   /**
@@ -53,9 +57,8 @@ class GNS3_Manager(val serverAddress:String) {
    * @throws InternalServerErrorException if an error occur on the server side
    * @throws ConflictException if there is a conflict with an other project
    */
-  def deleteProject(projectId: String) : GNS3_Manager = {
-    val returned = RESTApi.delete("/v2/projects/" + projectId, serverAddress);
-    if(returned != ""){
+  def deleteProject(projectId: String,) : GNS3_Manager = {
+    val returned = RESTApi.delete("/v2/projects/" + projectId, serverAddress,serverAddress,this.username,this.password)
       JSONApi.parseJSONObject(returned).getFromObject("message");
       if(!JSONApi.isNullPointer()) {
         val message = JSONApi.value[String];
@@ -81,7 +84,7 @@ class GNS3_Manager(val serverAddress:String) {
    * @throws ConflictException if there is a conflict with an other project
    */
   def getProjectId(name : String) : String = {
-    val returned = RESTApi.get("/v2/projects", serverAddress);
+    val returned = RESTApi.get("/v2/projects", serverAddress,serverAddress,this.username,this.password)
     try {
       JSONApi.parseJSONArray(returned);
       val projects = JSONApi.value[JSONArray].toArray();
