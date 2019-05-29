@@ -3,6 +3,7 @@ package GAPY
 import org.junit._
 import Assert._
 import scalaj.http._
+import org.json.simple._ 
 
 
 //TODO dans tout lee fichier remplacer les nodes par des appliances avec les tests que vont bien, ce fichier n'est pour l'instant qu'un template
