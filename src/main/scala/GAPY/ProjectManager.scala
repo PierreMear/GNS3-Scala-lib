@@ -28,12 +28,6 @@ class ProjectManager(val ProjectId: String, val serverAddress:String) {
     // Map Appliance/ID of the nodes in this project
     private val appliancesId = Map[Appliance,String]()
     
-<<<<<<< HEAD
-    // Map Appliance/ID of the nodes in this project
-    private val appliancesId = Map[Appliance,String]()
-    
-=======
->>>>>>> 6d6c45b238cd2a7146b02bf8858cbd7c7d05250f
     // Map Nodes/LinkID 
     private val linksId = Map[Link,String]()
   
@@ -56,15 +50,6 @@ class ProjectManager(val ProjectId: String, val serverAddress:String) {
     }
     
     /**
-<<<<<<< HEAD
-     * addNode : create a new node in the GNS3 project and save its ID in the name/id Map
-     * @param name : the name of the node
-     * @param nodeType : the type of the node
-     * @param computeId : the computeId of the node
-     * @return ProjectManager to be fluent
-     */
-    def addNode(a:Appliance): ProjectManager = {
-=======
      * addNode : create a node in the project from an appliance template
      * 
      * Take an appliance object as parameter and check with the REST API if this appliance template exist
@@ -83,7 +68,6 @@ class ProjectManager(val ProjectId: String, val serverAddress:String) {
       if(nodesId.filter((entry) => entry._1.name == a.name).size > 0){
         throw NodeNameConflictException("Conflict in nodes names : an other node already have this name -> " + a.name)
       }
->>>>>>> 6d6c45b238cd2a7146b02bf8858cbd7c7d05250f
       val returned = RESTApi.get("/v2/appliances",serverAddress)
       val appliances = JSONApi.parseJSONArray(returned).value[JSONArray]
       var applianceID:String = ""
@@ -101,22 +85,11 @@ class ProjectManager(val ProjectId: String, val serverAddress:String) {
     }
     
     /**
-<<<<<<< HEAD
-     * addLink : create a new link in the GNS3 project and save its ID in the (Node,Node)/id Map
-     * @param name1 : the name of the first node
-     * @param adaptater1 : adaptater number of the first node
-     * @param port1 : ethernet port of the first node
-     * @param name2 : the name of the second node
-     * @param adaptater2 : adaptater number of the second node
-     * @param port2 : ethernet port of the second node
-     * @return ProjectManager to be fluent
-=======
      * addLink : create a new link in the GNS3 project and save its ID in the Link/id Map
      * 
      * @param link  the {@link Link} object which represent the connection we want to create
      * @return {@link ProjectManager} to be fluent
      * @throws NodeNotFoundException if one of the specified node doesn't exist
->>>>>>> 6d6c45b238cd2a7146b02bf8858cbd7c7d05250f
      */
     def addLink(link:Link): ProjectManager = {
       if(!nodesId.contains(link.from)){
@@ -254,13 +227,6 @@ class ProjectManager(val ProjectId: String, val serverAddress:String) {
      * @return {@link ProjectManager} to be fluent
      */
     def copyProject(projectManager:ProjectManager): ProjectManager = {
-<<<<<<< HEAD
-      for(appliance:Appliance <- projectManager.appliancesId.keys){
-        this.addNode(appliance)
-      }
-      val applianceIDs:Array[String] = projectManager.appliancesId.values.asInstanceOf[Array[String]]
-      for((node:Node, id:String) <- projectManager.nodesId){
-=======
       var applianceIDs:List[String] = List()
       for((appliance:Appliance, id:String) <- projectManager.appliancesId){
         this.addNode(appliance)
@@ -268,7 +234,6 @@ class ProjectManager(val ProjectId: String, val serverAddress:String) {
       }
       println(applianceIDs)
       for((node:objectTypes.Node, id:String) <- projectManager.nodesId){
->>>>>>> 6d6c45b238cd2a7146b02bf8858cbd7c7d05250f
         if(!applianceIDs.contains(id)) this.addNode(node)
       }
       println(projectManager.nodesId)
