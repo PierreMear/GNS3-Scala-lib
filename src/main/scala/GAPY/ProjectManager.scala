@@ -20,7 +20,7 @@ import GAPY.GNS3_Exceptions._
  * @param ProjectId the ID of the project we want to work on
  * @param serverAddress the address of the GNS3 server(with port ex: 127.0.0.1:3080)
  */
-class ProjectManager(val ProjectId: String, val serverAddress:String, val username:String, val password:String) {
+class ProjectManager(val ProjectId: String, val serverAddress:String, val username:String = "", val password:String= "") {
 
     // Map Node/ID of the nodes in this project
     private val nodesId = Map[objectTypes.Node,String]()
@@ -43,7 +43,7 @@ class ProjectManager(val ProjectId: String, val serverAddress:String, val userna
         throw NodeNameConflictException("Conflict in nodes names : an other node already have this name -> " + n.name)
       }
       val body = "{\"name\":\"%s\",\"node_type\":\"%s\",\"compute_id\":\"%s\"}".format(n.name,n.node_type,n.compute_id)
-      val returned = RESTApi.post("/v2/projects/" + ProjectId + "/nodes",body,serverAddress,serverAddress,this.username,this.password)
+      val returned = RESTApi.post("/v2/projects/" + ProjectId + "/nodes",body,serverAddress,this.username,this.password)
       JSONApi.parseJSONObject(returned).getFromObject("node_id")
       nodesId += (n -> JSONApi.value[String])
       this
@@ -78,7 +78,7 @@ class ProjectManager(val ProjectId: String, val serverAddress:String, val userna
           applianceID = appliance.get("appliance_id").asInstanceOf[String]
         }
       }
-      val createdNode = RESTApi.post("/v2/projects/" + ProjectId + "/appliances/" + applianceID, "{}", serverAddress,serverAddress,this.username,this.password)
+      val createdNode = RESTApi.post("/v2/projects/" + ProjectId + "/appliances/" + applianceID, "{}",serverAddress,this.username,this.password)
       JSONApi.parseJSONObject(createdNode).getFromObject("node_id")
       appliancesId += (a -> JSONApi.value[String])
       nodesId += (a -> JSONApi.value[String])
@@ -102,7 +102,7 @@ class ProjectManager(val ProjectId: String, val serverAddress:String, val userna
       val node1 = "{\"adapter_number\":%s,\"node_id\":\"%s\",\"port_number\":%s}".format(link.fromAdapter,nodesId.getOrElse(link.from, ""),link.fromPort)
       val node2 = "{\"adapter_number\":%s,\"node_id\":\"%s\",\"port_number\":%s}".format(link.toAdapter,nodesId.getOrElse(link.to, ""),link.toPort)
       val body = "{\"nodes\":[%s,%s]}".format(node1,node2)
-      val returned = RESTApi.post("/v2/projects/" + ProjectId + "/links",body,serverAddress,serverAddress,this.username,this.password)
+      val returned = RESTApi.post("/v2/projects/" + ProjectId + "/links",body,serverAddress,this.username,this.password)
       JSONApi.parseJSONObject(returned).getFromObject("link_id")
       linksId += ( link -> JSONApi.value[String])
       this
@@ -135,7 +135,7 @@ class ProjectManager(val ProjectId: String, val serverAddress:String, val userna
       if(!nodesId.contains(n)){
         throw NodeNotFoundException("Node not found : you wanted to remove an innexisting node : " + n)
       }
-      var returned = RESTApi.delete("/v2/projects/" + ProjectId + "/nodes/" + nodesId.getOrElse(n, ""),serverAddress,serverAddress,this.username,this.password)
+      var returned = RESTApi.delete("/v2/projects/" + ProjectId + "/nodes/" + nodesId.getOrElse(n, ""),serverAddress,this.username,this.password)
       nodesId -= n
       for((appliance,id) <- appliancesId){
         if(appliance.name == n.name){
@@ -158,7 +158,7 @@ class ProjectManager(val ProjectId: String, val serverAddress:String, val userna
       if(!linksId.contains(link) && !linksId.contains(zelda)){
         throw LinkNotFoundException("Link not found : you wanted to remove an innexisting link : " + link)
       }
-      var returned = RESTApi.delete("/v2/projects/" + ProjectId + "/links/" + linksId.getOrElse(link, linksId.getOrElse(zelda, "")),serverAddress,serverAddress,this.username,this.password)
+      var returned = RESTApi.delete("/v2/projects/" + ProjectId + "/links/" + linksId.getOrElse(link, linksId.getOrElse(zelda, "")),serverAddress,this.username,this.password)
       linksId -= link
       this
     }
@@ -174,7 +174,7 @@ class ProjectManager(val ProjectId: String, val serverAddress:String, val userna
       if(!nodesId.contains(node)){
         throw NodeNotFoundException("Node not found : you wanted to start an innexisting node : " + node)
       }
-      var returned = RESTApi.post("/v2/projects/" + ProjectId + "/nodes/" + nodesId.getOrElse(node, "") + "/start","{}",serverAddress,serverAddress,this.username,this.password)
+      var returned = RESTApi.post("/v2/projects/" + ProjectId + "/nodes/" + nodesId.getOrElse(node, "") + "/start","{}",serverAddress,this.username,this.password)
       this
     }
 
@@ -189,7 +189,7 @@ class ProjectManager(val ProjectId: String, val serverAddress:String, val userna
       if(!nodesId.contains(node)){
         throw NodeNotFoundException("Node not found : you wanted to stop an innexisting node : " + node)
       }
-      var returned = RESTApi.post("/v2/projects/" + ProjectId + "/nodes/" + nodesId.getOrElse(node, "") + "/stop","{}",serverAddress,serverAddress,this.username,this.password)
+      var returned = RESTApi.post("/v2/projects/" + ProjectId + "/nodes/" + nodesId.getOrElse(node, "") + "/stop","{}",serverAddress,this.username,this.password)
       this
     }
 
@@ -303,6 +303,6 @@ class ProjectManager(val ProjectId: String, val serverAddress:String, val userna
      * delete : delete the current project
      */
     def delete() : Unit = {
-      var returned = RESTApi.delete("/v2/projects/" + ProjectId,serverAddress,serverAddress,this.username,this.password)
+      var returned = RESTApi.delete("/v2/projects/" + ProjectId,serverAddress,this.username,this.password)
     }
 }
