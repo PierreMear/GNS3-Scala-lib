@@ -40,11 +40,11 @@ class Test_JSONApi {
 
         assert(should, "Should had JSONCASTERROR")
 
-         val returned_2 = checkProjectsAPI("https://jsonplaceholder.typicode.com/todos/1")
+         val returned_2 = checkProjectsAPI("https://jsonhdfkejdjkgvlmcfchncmnkfjhsplaceholder.typicode.com/todos/1")
 
         should = false
         try {
-            val obj_fail_2 = JSONApi.getFromObject("id")
+            val obj_fail_2 = JSONApi.parseJSONArray(returned).getFromObject("id")
        } catch {
             case ev: JSON_Exceptions.JSONNotExisting => should = true
             case ex: Exception => println("Erreur " + ex.printStackTrace())
