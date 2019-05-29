@@ -21,8 +21,8 @@ class Test_Appliances {
       return returnServerAddress() + "/v2/projects"
     }
     
-    def checkProjectsAPI(): String = {
-      val http = Http(returnUrlAPI())
+    def checkProjectsAPI(added:String): String = {
+      val http = Http(returnUrlAPI() + added)
       val response: HttpResponse[String] = http.asString
       
       return response.body
