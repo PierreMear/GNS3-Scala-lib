@@ -28,4 +28,10 @@ object RESTApi {
     val response: HttpResponse[String] = http.method("delete").asString
     return response.body
   }
+  
+  def put(url: String, body:String, serverAddress:String): String = {
+    var http = Http(serverAddress + url)
+    val response: HttpResponse[String] = http.postData(body).method("put").asString
+    return response.body
+  }
 }
