@@ -36,7 +36,7 @@ You can use this template as follows :
 ```scala
 val manager = new GNS3_Manager("http://localhost:8080")
 val project = manager.createProject("RingNetwork")
-project.addTopology(new RingNetwork(List(LocalVpcs("PC1"),LocalVpcs("PC2"),LocalVpcs("PC3"),LocalVpcs("PC4"),LocalVpcs("PC5"),LocalVpcs("PC6"))))
+project.addTopology(new LinearNetwork(List(LocalVpcs("PC1"),LocalVpcs("PC2"),LocalVpcs("PC3"),LocalVpcs("PC4"),LocalVpcs("PC5"),LocalVpcs("PC6"))))
 ```
 
 ## FullyConnectedNetwork
