@@ -111,23 +111,23 @@ class Tests_Basic_Nodes {
       p.addNode(unique)
 
       // On test que l'ajout d'un lien impossible rend bien la bonne erreur
-      var good_error = False
+      var good_error = false
       try {
         val link_unique = objectTypes.SimpleLink(unique, two, 0,0)
         p.addLink(link_unique)
       } catch {
-        case ext: NodeNotFoundException => good_error = True
+        case ext: NodeNotFoundException => good_error = true
         case exc: Exception => throw new Exception("Error : \n" + ex.printStackTrace()) 
       }
       assert(good_error, "The code should have raised a NodeNotFoundException ! We created a link with a non-existing node")
 
       // On test dans l'autre sens
-      good_error = False
+      good_error = false
       try {
         val link_unique_two = objectTypes.SimpleLink(two, unique, 0,0)
         p.addLink(link_unique_two)
       } catch {
-        case ext: NodeNotFoundException => good_error = True
+        case ext: NodeNotFoundException => good_error = true
         case exc: Exception => throw new Exception("Error : \n" + ex.printStackTrace()) 
       }
       assert(good_error, "The code should have raised a NodeNotFoundException ! We created a link with a non-existing node")
