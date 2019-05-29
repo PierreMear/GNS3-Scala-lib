@@ -28,11 +28,11 @@ class Tests_Topology {
     def testFullyConnected() = {
       val projFC = new GNS3_Manager(returnServerAddress())
       val p = projFC.createProject("projFC")
-      var check = checkProjectsAPI()
+      var check = checkProjectsAPI("")
       val proj_id = p.ProjectId
       assert(check != "[]", "The project 'projFC' should have been created")
 
-      p.addTopology(new FullyConnectedNetwork(List(LocalVpcs("PC1"),LocalVpcs("PC2"),LocalVpcs("PC3"),LocalVpcs("PC4"),LocalVpcs("PC5"),LocalVpcs("PC6"))))
+      p.addTopology(new topologies.FullyConnectedNetwork(List(objectTypes.LocalVpcs("PC1"),objectTypes.LocalVpcs("PC2"),objectTypes.LocalVpcs("PC3"),objectTypes.LocalVpcs("PC4"),objectTypes.LocalVpcs("PC5"),objectTypes.LocalVpcs("PC6"))))
       
       var res_nodes = ""
       var res_links = ""
@@ -51,7 +51,7 @@ class Tests_Topology {
 
       projFC.deleteProject(proj_id) 
       assert(!boolean_error, "A error happened, look earlier in the logs")
-      check = checkProjectsAPI()
+      check = checkProjectsAPI("")
       assert(check == "[]", "The project 'projFC' should have been destroyed")  
 
 
