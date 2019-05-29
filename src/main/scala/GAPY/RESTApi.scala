@@ -19,7 +19,7 @@ object RESTApi {
    * @return the body of the page requested
    */
   def get(url: String, serverAddress:String, user:String, pass:String): String = {
-    var http = Http(serverAddress + url).headers("Authorization: Basic",user+ ":" + pass)
+    var http = Http(serverAddress + url).headers(("Authorization: Basic",user+ ":" + pass))
     val response: HttpResponse[String] = http.asString
     return response.body
   }
@@ -33,7 +33,7 @@ object RESTApi {
    * @return the body of the page requested
    */
   def post(url: String, body: String, serverAddress:String, user:String, pass:String): String = {
-    var http = Http(serverAddress + url).headers("Authorization: Basic",user+ ":" + pass)
+    var http = Http(serverAddress + url).headers(("Authorization: Basic",user+ ":" + pass))
     val response: HttpResponse[String] = http.postData(body).asString
     return response.body
   }
@@ -46,7 +46,7 @@ object RESTApi {
    * @return the body of the page requested
    */
   def delete(url: String, serverAddress:String, user:String, pass:String): String = {
-    var http = Http(serverAddress + url).headers("Authorization: Basic",user+ ":" + pass)
+    var http = Http(serverAddress + url).headers(("Authorization: Basic",user+ ":" + pass))
     val response: HttpResponse[String] = http.method("delete").asString
     return response.body
   }
@@ -60,7 +60,7 @@ object RESTApi {
    * @return the body of the page requested
    */
   def put(url: String, body:String, serverAddress:String, user:String, pass:String): String = {
-    var http = Http(serverAddress + url).headers("Authorization: Basic",user+ ":" + pass)
+    var http = Http(serverAddress + url).headers(("Authorization: Basic",user+ ":" + pass))
     val response: HttpResponse[String] = http.postData(body).method("put").asString
     return response.body
   }
