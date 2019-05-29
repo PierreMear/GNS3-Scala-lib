@@ -6,6 +6,7 @@ import GAPY.GNS3_Exceptions.NotFoundException
 import GAPY.GNS3_Exceptions.InternalServerErrorException
 import GAPY.GNS3_Exceptions.UnknownException
 import GAPY.GNS3_Exceptions.ConflictException
+import GAPY.JSON_Exceptions.JSONCastError
 
 /**
  * Manager of a GNS3 server
@@ -80,27 +81,35 @@ class GNS3_Manager(val serverAddress:String) {
    * @throws ConflictException if there is a conflict with an other project
    */
   def getProjectId(name : String) : String = {
-    val returned = RESTApi.get("/v2/projects/", serverAddress);
-    JSONApi.parseJSONObject(returned).getFromObject("status")
-    val status = JSONApi.value[Long];
-    val projects = JSONApi.parseJSONArray(returned).value[Array[Object]]
-    var id:String = "ID"
-    for(project <- projects){
-      if(project.asInstanceOf[JSONObject].get("name").asInstanceOf[String] == name){
-        id = project.asInstanceOf[JSONObject].get("project_id").asInstanceOf[String]
+    val returned = RESTApi.get("/v2/projects", serverAddress);
+    try {
+      JSONApi.parseJSONArray(returned);
+      val projects = JSONApi.value[JSONArray].toArray();
+      var id:String = "ID"
+      for(project <- projects){
+        if(project.asInstanceOf[JSONObject].get("name").asInstanceOf[String] == name){
+          id = project.asInstanceOf[JSONObject].get("project_id").asInstanceOf[String]
+        }
+      }
+      if(id != null){
+        return id
+      }
+    } catch {
+      case e: JSONCastError => {
+        JSONApi.parseJSONObject(returned).getFromObject("message");
+        if(!JSONApi.isNullPointer()) {
+          val message = JSONApi.value[String];
+          JSONApi.parseJSONObject(returned).getFromObject("status")
+          val status = JSONApi.value[Long]();
+          status match {
+            case 404 => throw new NotFoundException("project not found");
+            case 500 => throw new InternalServerErrorException("server unreachable");
+            case 409 => throw new ConflictException("Conflict with existing project");
+          } 
+        }
       }
     }
-    if(id != null){
-      return id
-    }else{
-      status match {
-        case 404 => throw new NotFoundException("project not found");
-        case 500 => throw new InternalServerErrorException("server unreachable");
-        case 409 => throw new ConflictException("Conflict with existing project");
-      }
-      return null;
-    }
-
+    return "noId";
   }
 
 }

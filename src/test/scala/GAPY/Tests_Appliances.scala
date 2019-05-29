@@ -3,10 +3,11 @@ package GAPY
 import org.junit._
 import Assert._
 import scalaj.http._
-import org.json.simple._ 
+
 
 @Test
-class Tests_topology {
+class Test_Appliances {
+    
     // Fonctions d'aides
     def returnServerAddress(): String = {
       return "http://148.60.11.201:3080"
@@ -22,6 +23,6 @@ class Tests_topology {
       
       return response.body
     }
-
+    
     //TODO
 }
