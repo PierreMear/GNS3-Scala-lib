@@ -32,7 +32,7 @@ class Tests_Topology {
       val proj_id = p.ProjectId
       assert(check != "[]", "The project 'projFC' should have been created")
 
-      p.addTopology(new topologies.FullyConnectedNetwork(List(objectTypes.LocalVpcs("PC1"),objectTypes.LocalVpcs("PC2"),objectTypes.LocalVpcs("PC3"),objectTypes.LocalVpcs("PC4"),objectTypes.LocalVpcs("PC5"),objectTypes.LocalVpcs("PC6"))))
+      p.addTopology(new topologies.FullyConnectedNetwork(List(objectTypes.LocalHub("PC1"),objectTypes.LocalHub("PC2"),objectTypes.LocalHub("PC3"),objectTypes.LocalHub("PC4"),objectTypes.LocalHub("PC5"),objectTypes.LocalHub("PC6"))))
       
       var res_nodes = ""
       var res_links = ""
@@ -40,11 +40,13 @@ class Tests_Topology {
       val returned_links = checkProjectsAPI("/" + proj_id + "/links" )
       var boolean_error = false
       try {
-        res_nodes = JSONApi.parseJSONArray(returned_nodes).getFromArray(5).getFromObject("name").value[String]
-        res_links = JSONApi.parseJSONArray(returned_links).getFromArray( ((6 * 5) / 2) - 1 ).getFromObject("name").value[String]
+
         returned_3 = checkProjectsAPI("/" + proj_id + "/links" )
         val obj = JSONApi.parseJSONArray(returned_3).value[JSONArray]
         println(obj.toJSONString())
+        res_nodes = JSONApi.parseJSONArray(returned_nodes).getFromArray(5).getFromObject("name").value[String]
+        res_links = JSONApi.parseJSONArray(returned_links).getFromArray( ((6 * 5) / 2) - 1 ).getFromObject("name").value[String]
+       
       } catch {
         case ex: Exception => print("Error : " + ex.printStackTrace()) ; boolean_error = true
       }
