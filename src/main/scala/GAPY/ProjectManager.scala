@@ -11,8 +11,14 @@ import objectTypes._
 import GAPY.GNS3_Exceptions._
 
 /**
- * Manager of a GNS3 project
  * @author Gwandalff
+ * 
+ * Manager of a GNS3 project
+ * 
+ * This class don't need to be instanciated in itself because it's created by the {@link GNS3_Manager}
+ * 
+ * @param ProjectId the ID of the project we want to work on
+ * @param serverAddress the address of the GNS3 server(with port ex: 127.0.0.1:3080)
  */
 class ProjectManager(val ProjectId: String, val serverAddress:String) {
   

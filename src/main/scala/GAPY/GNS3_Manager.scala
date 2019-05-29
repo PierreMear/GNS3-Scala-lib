@@ -7,8 +7,24 @@ import GAPY.GNS3_Exceptions.InternalServerErrorException
 import GAPY.GNS3_Exceptions.UnknownException
 import GAPY.GNS3_Exceptions.ConflictException
 
+/**
+ * Manager of a GNS3 server
+ * 
+ * Manage all the aspect of the project like create or delete a project
+ * 
+ * @param serverAddress the GNS3 server address(with port ex : 127.0.0.1:3080)
+ */
 class GNS3_Manager(val serverAddress:String) {
 
+  /**
+   * createProject : create a project on the server with the specified name
+   * 
+   * @param name the name of the project we want to create
+   * @return the project manager of the project we've just created
+   * @throws NotFoundException if the project is not found
+   * @throws InternalServerErrorException if an error occur on the server side
+   * @throws ConflictException if a project with the same name has already been created
+   */
   def createProject(name : String) : ProjectManager = {
     val returned = RESTApi.post("/v2/projects", "{\"name\": \"" + name + "\"}",serverAddress);
     JSONApi.parseJSONObject(returned).getFromObject("project_id")
@@ -27,6 +43,15 @@ class GNS3_Manager(val serverAddress:String) {
     return new ProjectManager(projectId, serverAddress);
   }
 
+  /**
+   * deleteProject : create a project on the server with the specified name
+   * 
+   * @param projectId the ID of the project we want to delete
+   * @return the {@link GNS3_Manager} to be able to fluently create a new project
+   * @throws NotFoundException if the project is not found
+   * @throws InternalServerErrorException if an error occur on the server side
+   * @throws ConflictException if there is a conflict with an other project
+   */
   def deleteProject(projectId: String) : GNS3_Manager = {
     val returned = RESTApi.delete("/v2/projects/" + projectId, serverAddress);
     if(returned != ""){
@@ -45,6 +70,15 @@ class GNS3_Manager(val serverAddress:String) {
     this
   }
 
+  /**
+   * getProjectId : get the ID of the project with the specified name
+   * 
+   * @param name the name of the project we want the ID
+   * @return the ID
+   * @throws NotFoundException if the project is not found
+   * @throws InternalServerErrorException if an error occur on the server side
+   * @throws ConflictException if there is a conflict with an other project
+   */
   def getProjectId(name : String) : String = {
     val returned = RESTApi.get("/v2/projects/", serverAddress);
     JSONApi.parseJSONObject(returned).getFromObject("status")
