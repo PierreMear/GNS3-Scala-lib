@@ -71,7 +71,7 @@ class Tests_Basic_Nodes {
 
       returned = checkProjectsAPI("/" + proj_id + "/links" )
       val obj = JSONApi.parseJSONArray(returned).value[JSONArray]
-      println(obj.toJSONString()) //On print les données pour observer la structure du document renvoyé
+      //println(obj.toJSONString()) //On print les données pour observer la structure du document renvoyé
 
       // On test si la node Hube Hyrule est bien au centre du layout avec les non bis
       val resultsLinks_one =     JSONApi.parseJSONArray(returned).getFromArray(0).getFromObject("nodes").getFromArray(0).getFromObject("node_id").value[String]
@@ -136,4 +136,119 @@ class Tests_Basic_Nodes {
       check = checkProjectsAPI("")
       assert(check == "[]", "The project 'projNode' should have been destroyed")
     }
+
+    // On test le removeLink
+    @Test
+    def testProjectRemoveLink() = {
+      val projRL = new GNS3_Manager(returnServerAddress())
+      val p = projRL.createProject("projRL")
+      var check = checkProjectsAPI("")
+      val proj_id = p.ProjectId
+      assert(check != "[]", "The project 'projRL' should have been created")
+
+      val one = objectTypes.LocalSwitch("Ultima")
+      val two = objectTypes.LocalSwitch("Anima")
+      
+      p.addNode(one).addNode(two)
+
+      var returned = checkProjectsAPI("/" + proj_id + "/nodes" )
+      val one_name = JSONApi.parseJSONArray(returned).getFromArray(0).getFromObject("name").value[String]
+      val two_name = JSONApi.parseJSONArray(returned).getFromArray(1).getFromObject("name").value[String]
+      val one_id = JSONApi.parseJSONArray(returned).getFromArray(0).getFromObject("node_id").value[String]
+      val two_id = JSONApi.parseJSONArray(returned).getFromArray(1).getFromObject("node_id").value[String]
+
+      val link = objectTypes.SimpleLink(one, two, 0 , 0)
+
+      p.addLink(link)
+
+      returned = checkProjectsAPI("/" + proj_id + "/links" )
+      
+      val resultsLinks =     JSONApi.parseJSONArray(returned).getFromArray(0).getFromObject("nodes").getFromArray(0).getFromObject("node_id").value[String]
+      val resultsLinks_bis = JSONApi.parseJSONArray(returned).getFromArray(0).getFromObject("nodes").getFromArray(1).getFromObject("node_id").value[String]
+
+      p.removeLink(link)
+
+      // On test que si on reremove le link, le projectManager lance une erreur linkNotfound
+      var good_error = false
+      try {
+        p.removeLink(link)
+      } catch {
+        case ext: GAPY.GNS3_Exceptions.LinkNotFoundException => good_error = true
+        case exc: Exception => println("Error : \n" + exc.printStackTrace()) 
+      }
+      
+    
+      returned = checkProjectsAPI("/" + proj_id + "/links" )
+
+      projRL.deleteProject(proj_id) 
+
+      assert(good_error, "The code should have raised a LinkNotFoundException ! We tried to destroy a link that doesn't exist")
+      assert(resultsLinks == one_id, "The first node of the link should have been "+ one_id + " and had " + resultsLinks)
+      assert(resultsLinks_bis == two_id, "The second node of the link should have been "+ two_id + " and had " + resultsLinks_bis)
+      assert(returned == "[]", "The link should have been destroyed but received : " + returned)
+      check = checkProjectsAPI("")
+      assert(check == "[]", "The project 'projRL' should have been destroyed")
+    }
+
+
+    @Test
+    def testProjectRemoveNode() = {
+      val projRN = new GNS3_Manager(returnServerAddress())
+      val p = projRN.createProject("projRN")
+      var check = checkProjectsAPI("")
+      val proj_id = p.ProjectId
+      assert(check != "[]", "The project 'projRN' should have been created")
+
+      val one = objectTypes.LocalSwitch("Ifrit")
+      val two = objectTypes.LocalSwitch("Shiva")
+      
+      p.addNode(one).addNode(two)
+
+      var returned = checkProjectsAPI("/" + proj_id + "/nodes" )
+      val one_name = JSONApi.parseJSONArray(returned).getFromArray(0).getFromObject("name").value[String]
+      val two_name = JSONApi.parseJSONArray(returned).getFromArray(1).getFromObject("name").value[String]
+      val one_id = JSONApi.parseJSONArray(returned).getFromArray(0).getFromObject("node_id").value[String]
+      val two_id = JSONApi.parseJSONArray(returned).getFromArray(1).getFromObject("node_id").value[String]
+
+      val link = objectTypes.SimpleLink(one, two, 0 , 0)
+
+      p.addLink(link)
+
+      returned = checkProjectsAPI("/" + proj_id + "/links" )
+      
+      val resultsLinks =     JSONApi.parseJSONArray(returned).getFromArray(0).getFromObject("nodes").getFromArray(0).getFromObject("node_id").value[String]
+      val resultsLinks_bis = JSONApi.parseJSONArray(returned).getFromArray(0).getFromObject("nodes").getFromArray(1).getFromObject("node_id").value[String]
+
+      p.removeNode(one)
+      returned = checkProjectsAPI("/" + proj_id + "/nodes" )
+      val one_name_should_shiva = JSONApi.parseJSONArray(returned).getFromArray(0).getFromObject("name").value[String]
+
+
+      // On test que si on reremove la node, le projectManager lance une erreur NodeNotfound
+      var good_error = false
+      try {
+        p.removeNode(one)
+      } catch {
+        case ext: GAPY.GNS3_Exceptions.NodeNotFoundException => good_error = true
+        case exc: Exception => println("Error : \n" + exc.printStackTrace())
+      }
+      
+    
+      val returned_should_empty = checkProjectsAPI("/" + proj_id + "/links" )
+
+      projRN.deleteProject(proj_id) 
+
+      assert(good_error, "The code should have raised a NodeNotFoundException ! We created a link with a non-existing node")
+      assert(resultsLinks == one_id, "The first node of the link should have been "+ one_id + " and had " + resultsLinks)
+      assert(one_name_should_shiva == "Shiva", "we destroyed the first node, and we should had 'Shiva' but got " + one_name_should_shiva + " instead !")
+      assert(resultsLinks_bis == two_id, "The second node of the link should have been "+ two_id + " and had " + resultsLinks_bis)
+      assert(returned_should_empty == "[]", "The link should have been destroyed by destroying one of the node, but received : " + returned)
+      check = checkProjectsAPI("")
+      assert(check == "[]", "The project 'projRN' should have been destroyed")
+    }
+
+
+
+
+
 }

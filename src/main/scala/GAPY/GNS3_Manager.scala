@@ -74,6 +74,42 @@ class GNS3_Manager(val serverAddress:String, val username:String = "", val passw
     }
     this
   }
+  
+  /**
+   * deleteAllProjects : delete all project of a specific {@link GNS3_Manager}
+   * 
+   * @return the {@link GNS3_Manager} to be able to fluently create a new project
+   * @throws NotFoundException if the project is not found
+   * @throws InternalServerErrorException if an error occur on the server side
+   * @throws ConflictException if there is a conflict with an other project
+   */
+  def deleteAllProjects() : GNS3_Manager = {
+    val returned = RESTApi.get("/v2/projects", serverAddress);
+    try {
+      JSONApi.parseJSONArray(returned);
+      val projects = JSONApi.value[JSONArray].toArray();
+      var id:String = "ID"
+      for(project <- projects){
+        id = project.asInstanceOf[JSONObject].get("project_id").asInstanceOf[String]
+        deleteProject(id);
+      }
+    } catch {
+      case e: JSONCastError => {
+        JSONApi.parseJSONObject(returned).getFromObject("message");
+        if(!JSONApi.isNullPointer()) {
+          val message = JSONApi.value[String];
+          JSONApi.parseJSONObject(returned).getFromObject("status")
+          val status = JSONApi.value[Long]();
+          status match {
+            case 404 => throw new NotFoundException("project not found");
+            case 500 => throw new InternalServerErrorException("server unreachable");
+            case 409 => throw new ConflictException("Conflict with existing project");
+          }
+        }
+      }
+    }
+    this
+  }
 
   /**
    * getProjectId : get the ID of the project with the specified name
