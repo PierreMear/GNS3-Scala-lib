@@ -148,7 +148,7 @@ class Test_Basic {
       try {
         p_bis.CopyProjet(p)
         val returned_nodes = checkProjectsAPI("/" + proj_id + "/nodes" )
-        val returned_links = checkProjectsAPI("/" + proj_id + "/links" 
+        val returned_links = checkProjectsAPI("/" + proj_id + "/links" )
         res_nodes = JSONApi.parseJSONArray(returned_nodes).getFromArray(5).getFromObject("name").value[String]
         res_links = JSONApi.parseJSONArray(returned_links).getFromArray(4).getFromObject("link_id").value[String]
       } catch {
