@@ -239,6 +239,17 @@ class ProjectManager(val ProjectId: String, val serverAddress:String) {
       this
     }
     
+    /**
+     * layout : lay out the network on GNS3 GUI
+     * 
+     * Use the forcelayout Scala API (https://github.com/rsimon/scala-force-layout)
+     * 
+     * create a graph with forcelayout API and call its doLayout function to find the positions of the nodes
+     * 
+     * @param scale(Optional) expantion coefficient of the graph
+     * @param maxIteration(Optional) the number of the system forces and positions update 
+     * @return {@link ProjectManager} to be fluent
+     */
     def layout(scale:Int = 5, maxIteration:Int = 1000): ProjectManager = {
       var nodes:Seq[forcelayout.Node] = Seq()
       for((node:objectTypes.Node, id:String) <- nodesId){
