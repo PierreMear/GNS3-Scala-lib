@@ -183,13 +183,11 @@ class Test_Basic {
         val returned_links = checkProjectsAPI("/" + proj_id + "/links" )
         res_nodes = JSONApi.parseJSONArray(returned_nodes).getFromArray(5).getFromObject("name").value[String]
         res_links = JSONApi.parseJSONArray(returned_links).getFromArray(4).getFromObject("link_id").value[String]
-        p.layout
       } catch {
         case ex: Exception => println("Erreur " + ex.printStackTrace()) ; shouldnt = true
       }
 
-      projCopy.deleteProject(proj_id)
-      projCopy.deleteProject(proj_id_bis)
+      projLayout.deleteProject(proj_id)
       check = checkProjectsAPI("")
       assert(res_nodes == "PC6", "The last node created should have been PC6 and not " + res_nodes)
       assert(res_links != null, "The last link created should have the 2n-3 th but it doesn't exist, res = " + res_links)
