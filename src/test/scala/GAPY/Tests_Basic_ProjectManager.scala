@@ -160,9 +160,8 @@ class Test_Basic {
       check = checkProjectsAPI("")
       assert(res_nodes == "PC6", "The last node created should have been PC6 and not " + res_nodes)
       assert(res_links != null, "The last link created should have the 2n-3 th but it doesn't exist, res = " + res_links)
-      assert(check == "[]", "The project 'projCopy' should have been destroyed")
+      assert(check == "[]", "The projects 'projCopy' and 'projCopy_bis' should have been destroyed")
       assert(!shouldnt, "A error happened during the Copy, please check ealier logs")
-      assert
     }
 
 
