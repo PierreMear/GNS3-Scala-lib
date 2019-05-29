@@ -44,7 +44,7 @@ class Test_JSONApi {
 
         should = false
         try {
-            val obj_fail_2 = JSONApi.parseJSONArray(returned).getFromObject("id")
+            val obj_fail_2 = JSONApi.parseJSONArray(returned).getFromArray(0)
        } catch {
             case ev: JSON_Exceptions.JSONNotExisting => should = true
             case ex: Exception => println("Erreur " + ex.printStackTrace())
