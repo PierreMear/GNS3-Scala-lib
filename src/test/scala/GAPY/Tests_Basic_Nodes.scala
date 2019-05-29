@@ -240,7 +240,7 @@ class Tests_Basic_Nodes {
 
       assert(good_error, "The code should have raised a NodeNotFoundException ! We created a link with a non-existing node")
       assert(resultsLinks == one_id, "The first node of the link should have been "+ one_id + " and had " + resultsLinks)
-      assert(one_name_should_shiva == "Shiva", "we destroyed the first node, and we should had 'Shiva' but got " + one_name_should_shiva " instead !")
+      assert(one_name_should_shiva == "Shiva", "we destroyed the first node, and we should had 'Shiva' but got " + one_name_should_shiva + " instead !")
       assert(resultsLinks_bis == two_id, "The second node of the link should have been "+ two_id + " and had " + resultsLinks_bis)
       assert(returned_should_empty == "[]", "The link should have been destroyed by destroying one of the node, but received : " + returned)
       check = checkProjectsAPI("")
