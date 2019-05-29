@@ -74,7 +74,7 @@ object JSONApi {
       throw JSONNotExisting("The JSON Array you wanted was null")
     }
     try{
-      pointer = pointer.asInstanceOf[JSONArray].get(paramName).asInstanceOf[Object]
+      pointer = pointer.asInstanceOf[JSONArray].get(paramIndex).asInstanceOf[Object]
     } catch {
       case _:ClassCastException => throw JSONCastError("You've tried to get from a JSONArray but that wasn't an array")
       case e:Throwable => throw e 
