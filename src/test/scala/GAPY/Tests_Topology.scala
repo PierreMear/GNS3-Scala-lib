@@ -43,7 +43,7 @@ class Tests_Topology {
         res_nodes = JSONApi.parseJSONArray(returned_nodes).getFromArray(5).getFromObject("name").value[String]
         res_links = JSONApi.parseJSONArray(returned_links).getFromArray( ((6 * 5) / 2) - 1 ).getFromObject("name").value[String]
       } catch {
-        case ex: Exception => print("Error : " + ex.printStackTrace() ; boolean_error = true)
+        case ex: Exception => print("Error : " + ex.printStackTrace()) ; boolean_error = true
       }
 
       assert(res_nodes == "PC6", "The last node created should have been PC6 and not " + res_nodes)
