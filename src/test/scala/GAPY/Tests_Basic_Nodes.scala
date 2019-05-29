@@ -71,7 +71,7 @@ class Tests_Basic_Nodes {
 
       returned = checkProjectsAPI("/" + proj_id + "/links" )
       val obj = JSONApi.parseJSONArray(returned).value[JSONArray]
-      println(obj.toJSONString()) //On print les données pour observer la structure du document renvoyé
+      //println(obj.toJSONString()) //On print les données pour observer la structure du document renvoyé
 
       // On test si la node Hube Hyrule est bien au centre du layout avec les non bis
       val resultsLinks_one =     JSONApi.parseJSONArray(returned).getFromArray(0).getFromObject("nodes").getFromArray(0).getFromObject("node_id").value[String]

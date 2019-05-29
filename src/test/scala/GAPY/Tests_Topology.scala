@@ -42,6 +42,9 @@ class Tests_Topology {
       try {
         res_nodes = JSONApi.parseJSONArray(returned_nodes).getFromArray(5).getFromObject("name").value[String]
         res_links = JSONApi.parseJSONArray(returned_links).getFromArray( ((6 * 5) / 2) - 1 ).getFromObject("name").value[String]
+        returned_3 = checkProjectsAPI("/" + proj_id + "/links" )
+        val obj = JSONApi.parseJSONArray(returned_3).value[JSONArray]
+        println(obj.toJSONString())
       } catch {
         case ex: Exception => print("Error : " + ex.printStackTrace()) ; boolean_error = true
       }
