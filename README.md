@@ -14,7 +14,7 @@ This project is the one and only achievement of the GAPY team.
 
 ## Installation
 
-Download or clone the project then use `mvn -Dmaven.test.skip=true package` to produce the JAR. Then all you have to do is to add the JAR to your project. The jar is created with built-in depedencies so you don't have to worry about it.
+Download or clone the project then use `mvn -Dmaven.test.skip=true package` to produce the JAR. Then all you have to do is to add the JAR to your project. The jar is created with most of its depedencies built-in. To make it work, be sure to have the Scala library. 
 
 ## Usage
 
