@@ -59,6 +59,7 @@ class GNS3_Manager(val serverAddress:String, val username:String = "", val passw
    */
   def deleteProject(projectId: String) : GNS3_Manager = {
     val returned = RESTApi.delete("/v2/projects/" + projectId, serverAddress,serverAddress,this.username,this.password)
+    if (returned != ""){
       JSONApi.parseJSONObject(returned).getFromObject("message");
       if(!JSONApi.isNullPointer()) {
         val message = JSONApi.value[String];
