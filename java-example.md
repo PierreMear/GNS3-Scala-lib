@@ -2,10 +2,12 @@
 
 Here is an example on how to use the library in Java to create a project, add a few nodes and create links between them.
 
+However this library is meant to be used in Scala and is not comfortable to use in Java
+
 ```java
 import GAPY.GNS3_Manager;
 import GAPY.ProjectManager;
-import objectTypes.*;
+import GAPY.objectTypes.*;
 
 public class Main {
 
