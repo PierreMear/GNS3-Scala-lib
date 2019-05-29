@@ -45,16 +45,16 @@ class Tests_Topology {
         val obj = JSONApi.parseJSONArray(returned_3).value[JSONArray]
         println(obj.toJSONString())
         res_nodes = JSONApi.parseJSONArray(returned_nodes).getFromArray(5).getFromObject("name").value[String]
-        res_links = JSONApi.parseJSONArray(returned_links).getFromArray( ((6 * 5) / 2) - 1 ).getFromObject("name").value[String]
+        res_links = JSONApi.parseJSONArray(returned_links).getFromArray( ((6 * 5) / 2) - 1 ).getFromObject("link_id").value[String]
        
       } catch {
         case ex: Exception => print("Error : " + ex.printStackTrace()) ; boolean_error = true
       }
-
-      assert(res_nodes == "PC6", "The last node created should have been PC6 and not " + res_nodes)
-      assert(res_links != null, "The last link created should have the (n*n-1)/2 th but it doesn't exist")
-
       projFC.deleteProject(proj_id) 
+      assert(res_nodes == "PC6", "The last node created should have been PC6 and not " + res_nodes)
+      assert(res_links != null, "The last link created should have the (n*n-1)/2 th but it doesn't exist, res = " + res_links)
+
+      
       assert(!boolean_error, "A error happened, look earlier in the logs")
       check = checkProjectsAPI("")
       assert(check == "[]", "The project 'projFC' should have been destroyed")  
