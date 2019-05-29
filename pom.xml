@@ -9,7 +9,7 @@
   <licenses>
     <license>
       <name>My License</name>
-      <url>https://github.com/PierreMear/GNS3-Scala-lib/LICENSE.txt</url>
+      <url>https://github.com/PierreMear/GNS3-Scala-lib/blob/master/LICENSE.txt</url>
       <distribution>repo</distribution>
     </license>
   </licenses>
