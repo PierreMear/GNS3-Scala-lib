@@ -40,7 +40,7 @@ class Test_JSONApi {
 
         assert(should, "Should had JSONCASTERROR")
 
-         val returned_2 = checkProjectsAPI("https://jsonplaceholder.typicode.com/todos/1/2")
+         val returned_2 = checkProjectsAPI("https://www.google.com/non")
 
         should = false
         try {
