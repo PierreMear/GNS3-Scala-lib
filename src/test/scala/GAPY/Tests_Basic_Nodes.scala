@@ -116,8 +116,8 @@ class Tests_Basic_Nodes {
         val link_unique = objectTypes.SimpleLink(unique, two, 0,0)
         p.addLink(link_unique)
       } catch {
-        case ext: NodeNotFoundException => good_error = true
-        case exc: Exception => throw new Exception("Error : \n" + ex.printStackTrace()) 
+        case ext: GAPY.GNS3_Exceptions.NodeNotFoundException => good_error = true
+        case exc: Exception => throw new Exception("Error : \n" + exc.printStackTrace()) 
       }
       assert(good_error, "The code should have raised a NodeNotFoundException ! We created a link with a non-existing node")
 
@@ -127,8 +127,8 @@ class Tests_Basic_Nodes {
         val link_unique_two = objectTypes.SimpleLink(two, unique, 0,0)
         p.addLink(link_unique_two)
       } catch {
-        case ext: NodeNotFoundException => good_error = true
-        case exc: Exception => throw new Exception("Error : \n" + ex.printStackTrace()) 
+        case ext: GAPY.GNS3_Exceptions.NodeNotFoundException => good_error = true
+        case exc: Exception => throw new Exception("Error : \n" + exc.printStackTrace()) 
       }
       assert(good_error, "The code should have raised a NodeNotFoundException ! We created a link with a non-existing node")
 
