@@ -6,7 +6,7 @@ import scalaj.http._
 import org.json.simple._ 
 
 @Test
-class Tests_topology {
+class Tests_Topology {
     // Fonctions d'aides
     def returnServerAddress(): String = {
       return "http://148.60.11.201:3080"
