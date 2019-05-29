@@ -19,7 +19,7 @@ object RESTApi {
    * @return the body of the page requested
    */
   def get(url: String, serverAddress:String, user:String, pass:String): String = {
-    var http
+    var http = null
     if(user == "" && pass == ""){
       http = Http(serverAddress + url)
     }else{
@@ -38,7 +38,7 @@ object RESTApi {
    * @return the body of the page requested
    */
   def post(url: String, body: String, serverAddress:String, user:String, pass:String): String = {
-    var http
+    var http = null
     if (user == "" && pass == ""){
       http = Http(serverAddress + url)
     }else{
@@ -56,7 +56,7 @@ object RESTApi {
    * @return the body of the page requested
    */
   def delete(url: String, serverAddress:String, user:String, pass:String): String = {
-    var http
+    var http = null
     if (user == "" && pass == ""){
       http = Http(serverAddress + url)
     }else{
@@ -75,7 +75,7 @@ object RESTApi {
    * @return the body of the page requested
    */
   def put(url: String, body:String, serverAddress:String, user:String, pass:String): String = {
-    var http
+    var http= null
     if(user == "" && pass == ""){
       http = Http(serverAddress + url)
     }else{
