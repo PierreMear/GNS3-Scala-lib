@@ -42,7 +42,7 @@ class Tests_Topology {
 
         val returned_3 = checkProjectsAPI("/" + proj_id + "/links" )
         val obj = JSONApi.parseJSONArray(returned_3).value[JSONArray]
-        println(obj.toJSONString())
+        //println(obj.toJSONString())
         res_nodes = JSONApi.parseJSONArray(returned_nodes).getFromArray(5).getFromObject("name").value[String]
         res_links = JSONApi.parseJSONArray(returned_links).getFromArray( ((6 * 5) / 2) - 1 ).getFromObject("link_id").value[String]
        
@@ -141,7 +141,7 @@ class Tests_Topology {
       val proj_id = p.ProjectId
       assert(check != "[]", "The project 'projSL' should have been created")
 
-      p.addTopology(new topologies.RingNetwork(List(objectTypes.LocalHub("PC1"),objectTypes.LocalHub("PC2"),objectTypes.LocalHub("PC3"),objectTypes.LocalHub("PC4"),objectTypes.LocalHub("PC5"),objectTypes.LocalHub("PC6"))))
+      p.addTopology(new topologies.RingNetwork(objectTypes.LocalHub("PC1"),List(objectTypes.LocalHub("PC2"),objectTypes.LocalHub("PC3"),objectTypes.LocalHub("PC4"),objectTypes.LocalHub("PC5"),objectTypes.LocalHub("PC6"))))
       
       var res_nodes = ""
       var res_links = ""
@@ -152,7 +152,7 @@ class Tests_Topology {
 
         val returned_check = checkProjectsAPI("/" + proj_id + "/links" )
         val obj = JSONApi.parseJSONArray(returned_check).value[JSONArray]
-        //println(obj.toJSONString())
+        println(obj.toJSONString())
         res_nodes = JSONApi.parseJSONArray(returned_nodes).getFromArray(5).getFromObject("name").value[String]
         res_links = JSONApi.parseJSONArray(returned_links).getFromArray(8).getFromObject("link_id").value[String]
        
@@ -177,7 +177,7 @@ class Tests_Topology {
       val proj_id = p.ProjectId
       assert(check != "[]", "The project 'projStar' should have been created")
 
-      p.addTopology(new topologies.RingNetwork(List(objectTypes.LocalHub("PC1"),objectTypes.LocalHub("PC2"),objectTypes.LocalHub("PC3"),objectTypes.LocalHub("PC4"),objectTypes.LocalHub("PC5"),objectTypes.LocalHub("PC6"))))
+      p.addTopology(new topologies.RingNetwork(objectTypes.LocalHub("PC1"),List(objectTypes.LocalHub("PC2"),objectTypes.LocalHub("PC3"),objectTypes.LocalHub("PC4"),objectTypes.LocalHub("PC5"),objectTypes.LocalHub("PC6"))))
       
       var res_nodes = ""
       var res_links = ""
@@ -213,7 +213,7 @@ class Tests_Topology {
       val proj_id = p.ProjectId
       assert(check != "[]", "The project 'projSR' should have been created")
 
-      p.addTopology(new topologies.RingNetwork(List(objectTypes.LocalHub("PC1"),objectTypes.LocalHub("PC2"),objectTypes.LocalHub("PC3"),objectTypes.LocalHub("PC4"),objectTypes.LocalHub("PC5"),objectTypes.LocalHub("PC6"))))
+      p.addTopology(new topologies.RingNetwork(objectTypes.LocalHub("PC1"),List(objectTypes.LocalHub("PC2"),objectTypes.LocalHub("PC3"),objectTypes.LocalHub("PC4"),objectTypes.LocalHub("PC5"),objectTypes.LocalHub("PC6"))))
       
       var res_nodes = ""
       var res_links = ""
