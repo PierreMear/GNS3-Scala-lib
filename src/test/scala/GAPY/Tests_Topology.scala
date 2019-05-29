@@ -177,7 +177,7 @@ class Tests_Topology {
       val proj_id = p.ProjectId
       assert(check != "[]", "The project 'projStar' should have been created")
 
-      p.addTopology(new topologies.StarNetwork(objectTypes.LocalHub("PC1"),List(objectTypes.LocalHub("PC2"),objectTypes.LocalHub("PC3"),objectTypes.LocalHub("PC4"),objectTypes.LocalHub("PC5"),objectTypes.LocalHub("PC6"))))
+      p.addTopology(new topologies.StarNetwork(objectTypes.LocalHub("PC1"),List(objectTypes.LocalVpcs("PC2"),objectTypes.LocalVpcs("PC3"),objectTypes.LocalVpcs("PC4"),objectTypes.LocalVpcs("PC5"),objectTypes.LocalVpcs("PC6"))))
       
       var res_nodes = ""
       var res_links = ""
