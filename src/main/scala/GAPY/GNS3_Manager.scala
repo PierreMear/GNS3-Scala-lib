@@ -74,10 +74,10 @@ class GNS3_Manager(val serverAddress:String, val username:String = "", val passw
     }
     this
   }
-  
+
   /**
    * deleteAllProjects : delete all project of a specific {@link GNS3_Manager}
-   * 
+   *
    * @return the {@link GNS3_Manager} to be able to fluently create a new project
    * @throws NotFoundException if the project is not found
    * @throws InternalServerErrorException if an error occur on the server side

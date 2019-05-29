@@ -70,6 +70,7 @@ class ProjectManager(val ProjectId: String, val serverAddress:String, val userna
       }
       val returned = RESTApi.get("/v2/appliances",serverAddress,this.username,this.password)
       val appliances = JSONApi.parseJSONArray(returned).value[JSONArray].toArray()
+>>>>>>> trying to add an optionnal authentification to gns3 server
       var applianceID:String = ""
       for(obj_appliance <- appliances){
         val appliance = obj_appliance.asInstanceOf[JSONObject]
@@ -78,6 +79,7 @@ class ProjectManager(val ProjectId: String, val serverAddress:String, val userna
         }
       }
       val createdNode = RESTApi.post("/v2/projects/" + ProjectId + "/appliances/" + applianceID, "{\"x\":0,\"y\":0}",serverAddress,this.username,this.password)
+>>>>>>> trying to add an optionnal authentification to gns3 server
       JSONApi.parseJSONObject(createdNode).getFromObject("node_id")
       appliancesId += (a -> JSONApi.value[String])
       nodesId += (a -> JSONApi.value[String])
