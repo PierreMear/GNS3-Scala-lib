@@ -19,7 +19,7 @@ object RESTApi {
    * @return the body of the page requested
    */
   def get(url: String, serverAddress:String, user:String, pass:String): String = {
-    if(user == "" && pass = ""){
+    if(user == "" && pass == ""){
       var http = Http(serverAddress + url)
     }else{
       var http = Http(serverAddress + url).headers(("Authorization: Basic",user+ ":" + pass))
