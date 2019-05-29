@@ -152,7 +152,7 @@ class Test_Basic {
         res_nodes = JSONApi.parseJSONArray(returned_nodes).getFromArray(5).getFromObject("name").value[String]
         res_links = JSONApi.parseJSONArray(returned_links).getFromArray(4).getFromObject("link_id").value[String]
       } catch {
-        ex: Exception => println("Erreur " + ex.printStackTrace()) ; shouldnt = true
+        case ex: Exception => println("Erreur " + ex.printStackTrace()) ; shouldnt = true
       }
 
       projCopy.deleteProject(proj_id)
