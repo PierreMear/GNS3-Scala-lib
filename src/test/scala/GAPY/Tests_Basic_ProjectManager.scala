@@ -108,7 +108,7 @@ class Test_Basic {
       assert(good_error, "The code should have raised a NotFoundExceptions ! We deleted a project that doesn't exist")
 
       projError.deleteProject(proj_id)
-      check = checkProjectsAPI("")
+      check = checkProjectsAPI()
       assert(check == "[]", "The project 'projError' should have been destroyed")
 
     }
