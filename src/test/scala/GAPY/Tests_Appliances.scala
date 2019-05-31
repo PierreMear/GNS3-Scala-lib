@@ -33,7 +33,7 @@ class Test_Appliances {
     }
     
     //Test si les nodes et liens sont bien créées, avec le bon nom et le bon type
-    //@Test
+    @Test
     def testProjectAndAppliancesAndLinks() = {
       val projNodeTest = new GNS3_Manager(returnServerAddress())
       val p = projNodeTest.createProject("projAppliances")
@@ -87,7 +87,7 @@ class Test_Appliances {
       assert(check == "[]", "The project 'projAppliance' should have been destroyed")             
     }
 
-    //@Test
+    @Test
     def testProjectFalseLink() = {
       val projNodeTest = new GNS3_Manager(returnServerAddress())
       val p = projNodeTest.createProject("projFalseLink")
@@ -127,6 +127,7 @@ class Test_Appliances {
     }
     
     // TODO: make secure the SSH test
+    @Test
     def testApplianceWithConfig() = {
 
       // On recup la config, qui doit être de la forme config_test_ssh.json avec dedans un objet JSON avec les champs user et pass
