@@ -6,7 +6,7 @@ import GAPY.objectTypes._
 object App {
 
   def main(args : Array[String]) {
-    val p = new ProjectManager("50392e51-1334-49e6-858a-1649e22badf7","http://localhost:3080")
+    /*val p = new ProjectManager("50392e51-1334-49e6-858a-1649e22badf7","http://localhost:3080")
     p.addTopology(new StarNetwork(LocalHub("LocalHub1"),List(LocalVpcs("PC0-0"),LocalVpcs("PC0-1"),LocalVpcs("PC0-2"),LocalVpcs("PC0-3"),LocalVpcs("PC0-4"),LocalVpcs("PC0-5"))))
     .addTopology(new StarRingNetwork(LocalHub("LocalHub2"),List(LocalHub("PC1-0"),LocalHub("PC1-1"),LocalHub("PC1-2"),LocalHub("PC1-3"),LocalHub("PC1-4"),LocalHub("PC1-5"))))
     .addTopology(new StarLinearNetwork(LocalHub("LocalHub3"),List(LocalHub("PC2-0"),LocalHub("PC2-1"),LocalHub("PC2-2"),LocalHub("PC2-3"),LocalHub("PC2-4"),LocalHub("PC2-5"))))
@@ -19,7 +19,7 @@ object App {
     .addLink(SimpleLink(LocalHub("LocalHub4"),LocalHub("LocalHub5"),6,7))
     .addLink(SimpleLink(LocalHub("LocalHub5"),LocalHub("LocalHub6"),6,7))
     .addLink(SimpleLink(LocalHub("LocalHub6"),LocalHub("LocalHub1"),6,7))
-    .layout(maxIteration = 10000)
+    .layout(maxIteration = 10000)*/
 
     /*p.addNode(LocalVpcs("PC1"))
     .addNode(LocalVpcs("PC2"))
@@ -38,6 +38,8 @@ object App {
     .copyProject(p)
     .addTopology(new RingNetwork(List(LocalHub("copyLink"),LocalHub("copy1"),LocalHub("copy2"),LocalHub("copy3"),LocalHub("copy4"))))
     .addLink(SimpleLink(LocalHub("LocalHub1"),LocalHub("copyLink"),7,4))*/
+    
+    //SSHApi.upload("./README.md","./README.md",SSH_Config("HOST_IP", "USERNAME", "PASSWORD"))
   }
 
 }

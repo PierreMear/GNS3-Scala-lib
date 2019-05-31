@@ -4,7 +4,7 @@ import scalaj.http._
 import org.json.simple._
 
 /**
- * REST API request object
+ * REST API request object<br>
  * Use this object to make easier HTTP requests
  *
  * @author Gwandalff
