@@ -39,7 +39,7 @@ class Test_Appliances {
       val p = projNodeTest.createProject("projAppliances")
       var check = checkProjectsAPI("")
       val proj_id = p.ProjectId
-      assert(check != "[]", "The project 'projNode' should have been created")
+      assert(check != "[]", "The project 'projAppliances' should have been created")
 
       //On créé les objets Appliance que l'on va ajouter au projet
       p.addNode(Alpine("Link"))
@@ -84,7 +84,7 @@ class Test_Appliances {
       
       projNodeTest.deleteProject(proj_id) 
       check = checkProjectsAPI("")
-      assert(check == "[]", "The project 'projNode' should have been destroyed")             
+      assert(check == "[]", "The project 'projAppliance' should have been destroyed")             
     }
 
     //@Test
@@ -128,8 +128,15 @@ class Test_Appliances {
     
     // TODO: make secure the SSH test
     def testApplianceWithConfig() = {
-      val projNodeTest = new GNS3_Manager(returnServerAddress())
+
+      // On recup la config, qui doit être de la forme config_test_ssh.json avec dedans un objet JSON avec les champs user et pass
+      val stream = new FileInputStream("./config_test_ssh.json")
+      val json_data = try {  Json.parse(stream) } finally { stream.close() }
+
+      println(json_data["user"])
+      val projNodeTest = new GNS3_Manager(returnServerAddress()).enableSSH("148.60.11.201", json_data["user"], json_data["pass"])
       val p = projNodeTest.createProject("projConfig")
+
       var check = checkProjectsAPI("")
       val proj_id = p.ProjectId
       assert(check != "[]", "The project 'projConfig' should have been created")
@@ -139,7 +146,10 @@ class Test_Appliances {
       
       val node_id = JSONApi.parseJSONArray(checkProjectsAPI("/"+proj_id+"/nodes")).getFromArray(0).getFromObject("node_id").value[String]
       val remotePath:String = "/opt/gns3/projects/%s/project-files/docker/%s/etc/network/interfaces".format(proj_id,node_id)
-      val cat = SSHApi.cat(remotePath, SSH_Config("148.60.11.201", "USER", "PASS"))
+
+
+
+      val cat = SSHApi.cat(remotePath, SSH_Config("148.60.11.201", json_data["user"], json_data["pass"]))
 
       projNodeTest.deleteProject(proj_id) 
       check = checkProjectsAPI("")
