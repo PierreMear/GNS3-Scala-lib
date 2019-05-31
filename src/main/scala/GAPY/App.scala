@@ -4,6 +4,8 @@ import GAPY.topologies._
 import GAPY.objectTypes._
 
 object App {
+  
+  case class Alpine(override val name:String) extends Appliance("Alpine Linux",name,"docker","local")
 
   def main(args : Array[String]) {
     /*val p = new ProjectManager("50392e51-1334-49e6-858a-1649e22badf7","http://localhost:3080")
@@ -39,7 +41,14 @@ object App {
     .addTopology(new RingNetwork(List(LocalHub("copyLink"),LocalHub("copy1"),LocalHub("copy2"),LocalHub("copy3"),LocalHub("copy4"))))
     .addLink(SimpleLink(LocalHub("LocalHub1"),LocalHub("copyLink"),7,4))*/
     
-    //SSHApi.upload("./README.md","./README.md",SSH_Config("HOST_IP", "USERNAME", "PASSWORD"))
+    //val cat = SSHApi.cat("FILE", SSH_Config("HOST", "USER", "PASS"))
+    /*val gnsManager:GNS3_Manager = new GNS3_Manager("http://148.60.11.201:3080")
+    gnsManager
+    .enableSSH("148.60.11.201","zprojet", "gapy-gns3-test-2020")
+    .createProject("Test SSH")
+    .addNode(Alpine("ConfiguredAlpine"),"./interfaces")
+    .addNode(Alpine("ConfiguredAlpine2"),"./interfaces")
+    .addLink(SimpleLink(Alpine("ConfiguredAlpine"),Alpine("ConfiguredAlpine2"),0,0))*/
   }
 
 }
