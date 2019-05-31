@@ -5,6 +5,7 @@ import Assert._
 import scalaj.http._
 import org.json.simple._ 
 import java.io.FileInputStream
+import play.api.libs.json._
 import objectTypes._
 
 //TODO dans tout lee fichier remplacer les nodes par des appliances avec les tests que vont bien, ce fichier n'est pour l'instant qu'un template
@@ -131,9 +132,9 @@ class Test_Appliances {
 
       // On recup la config, qui doit être de la forme config_test_ssh.json avec dedans un objet JSON avec les champs user et pass
       val stream = new FileInputStream("./config_test_ssh.json")
-      val json_data = try {  JSONApi.parseJSONObject(stream) } finally { stream.close() }
-      val creds_user = json_data.getFromObject("user")
-      val creds_pass = json_data.getFromObject("pass")
+      val json_data = try {  Json.parse(stream) } finally { stream.close() }
+      val creds_user = JSONApi.parseJSONObject(json_data).getFromObject("user")
+      val creds_pass = JSONApi.parseJSONObject(json_data).getFromObject("pass")
       println(creds_user)
       val projNodeTest = new GNS3_Manager(returnServerAddress()).enableSSH("148.60.11.201", creds_user, creds_pass)
       val p = projNodeTest.createProject("projConfig")
