@@ -131,8 +131,8 @@ class Test_Appliances {
 
       // On recup la config, qui doit être de la forme config_test_ssh.json avec dedans un objet JSON avec les champs user et pass
       val fileContents = Source.fromFile("./src/test/scala/GAPY/config_test_ssh.json").getLines.mkString
-      val creds_user = JSONApi.parseJSONObject(fileContents).getFromObject("user")
-      val creds_pass = JSONApi.parseJSONObject(fileContents).getFromObject("pass")
+      val creds_user = JSONApi.parseJSONObject(fileContents).getFromObject("user").value[String]
+      val creds_pass = JSONApi.parseJSONObject(fileContents).getFromObject("pass").value[String]
       println(creds_user)
       val projNodeTest = new GNS3_Manager(returnServerAddress()).enableSSH("148.60.11.201", creds_user, creds_pass)
       val p = projNodeTest.createProject("projConfig")
