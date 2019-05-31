@@ -163,8 +163,8 @@ class GNS3_Manager(val serverAddress:String, val username:String = "", val passw
    * @param pass the password
    * @return the {@link GNS3_Manager} to be able to fluently create a new project after enabling SSH
    */
-  def enableSSH(user:String, pass:String) : GNS3_Manager = {
-    ssh_config = SSH_Config(serverAddress,user,pass)
+  def enableSSH(serverIP:String, user:String, pass:String) : GNS3_Manager = {
+    ssh_config = SSH_Config(serverIP,user,pass)
     this
   }
   
