@@ -18,6 +18,8 @@ import GAPY.JSON_Exceptions.JSONCastError
  * @param password the password used to connect to the GNS3 server
  */
 class GNS3_Manager(val serverAddress:String, val username:String = "", val password:String = "") {
+  
+  private var ssh_config:SSH_Config = null
 
   /**
    * createProject : create a project on the server with the specified name
@@ -45,7 +47,7 @@ class GNS3_Manager(val serverAddress:String, val username:String = "", val passw
         case 409 => throw new ConflictException("Conflict with existing project");
       }
     }
-    return new ProjectManager(projectId, serverAddress,this.username,this.password);
+    return new ProjectManager(projectId, serverAddress,this.username,this.password, ssh_config);
   }
 
   /**
@@ -150,6 +152,33 @@ class GNS3_Manager(val serverAddress:String, val username:String = "", val passw
       }
     }
     return "noId";
+  }
+  
+  /**
+   * enableSSH : allow the projects' files on this manager's server to be accessed by SSH
+   * 
+   * Mandatory for the configuration of {@link Appliance} within the {@link ProjectManager#addNode(Appliance,String)}
+   * 
+   * @param user the username used to connect via SSH
+   * @param pass the password
+   * @return the {@link GNS3_Manager} to be able to fluently create a new project after enabling SSH
+   */
+  def enableSSH(user:String, pass:String) : GNS3_Manager = {
+    ssh_config = SSH_Config(serverAddress,user,pass)
+    this
+  }
+  
+  /**
+   * disableSSH : cancel the right to connect
+   * 
+   * Warning : if you disable you won't be able to send config files through SSH and that is
+   * mandatory for the configuration of {@link Appliance} within the {@link ProjectManager#addNode(Appliance,String)}
+   * 
+   * @return the {@link GNS3_Manager} to be able to fluently create a new project after disabling SSH
+   */
+  def disableSSH() : GNS3_Manager = {
+    ssh_config = null
+    this
   }
 
 }

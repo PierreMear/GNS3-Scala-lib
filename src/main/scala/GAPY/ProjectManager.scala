@@ -9,6 +9,7 @@ import GAPY.forcelayout._
 
 import GAPY.objectTypes._
 import GAPY.GNS3_Exceptions._
+import GAPY.SSHApi_Exceptions._
 
 /**
  * @author Gwandalff
@@ -20,7 +21,7 @@ import GAPY.GNS3_Exceptions._
  * @param ProjectId the ID of the project we want to work on
  * @param serverAddress the address of the GNS3 server(with port ex: 127.0.0.1:3080)
  */
-class ProjectManager(val ProjectId: String, val serverAddress:String, val username:String = "", val password:String= "") {
+class ProjectManager(val ProjectId: String, val serverAddress:String, val username:String = "", val password:String= "", val ssh_config:SSH_Config = null) {
 
     // Map Node/ID of the nodes in this project
     private val nodesId = Map[objectTypes.Node,String]()
@@ -81,6 +82,37 @@ class ProjectManager(val ProjectId: String, val serverAddress:String, val userna
       JSONApi.parseJSONObject(createdNode).getFromObject("node_id")
       appliancesId += (a -> JSONApi.value[String])
       nodesId += (a -> JSONApi.value[String])
+      this
+    }
+    
+    /**
+     * addNode : create a node in the project from an appliance template with a config file
+     *
+     * Take an appliance object as parameter and check with the REST API if this appliance template exist
+     * if this template exist, then we get its ID and create it.
+     * <p>
+     * After that we will add the {@link Node} to the Node/ID map to ensure that it will be well used after.
+     * We add the {@link Appliance} object and the id of the node to the Appliance/ID to save the type of appliance
+     * we want to create when we copy the project.
+     * The ID saved in both maps is the node ID to not duplicate appliance nodes in a copy of the project
+     * 
+     * Finally, copy the file at the path in parameter in :<br>
+     * /opt/gns3/projects/ID_Project/project-files/docker/ID_NODE/etc/network/interfaces<br>
+     * To change the network interface of the node
+     *
+     * @param a the {@link Appliance} object you want to create
+     * @param pathToConfigFile the path of the config file on your local computer
+     * @return {@link ProjectManager} to be fluent
+     * @throws NodeNameConflictException if the name is already used for an other node
+     * @throws SSHDisabledException if the SSH connection wasn't enable
+     */
+    def addNode(a:Appliance, pathToConfigFile:String): ProjectManager = {
+      if(ssh_config==null){
+        throw SSHDisabledException("You can't use this function without enabling SSH in the GNS3_Manager before")
+      }
+      this.addNode(a)
+      val remotePath:String = "/opt/gns3/projects/%s/project-files/docker/%s/etc/network/interfaces".format(ProjectId,appliancesId.getOrElse(a, ""))
+      SSHApi.upload(pathToConfigFile,remotePath,ssh_config)
       this
     }
 
