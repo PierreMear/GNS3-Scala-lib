@@ -33,7 +33,7 @@ class Test_Appliances {
     }
     
     //Test si les nodes et liens sont bien créées, avec le bon nom et le bon type
-    @Test
+    //@Test
     def testProjectAndAppliancesAndLinks() = {
       val projNodeTest = new GNS3_Manager(returnServerAddress())
       val p = projNodeTest.createProject("projAppliances")
@@ -87,7 +87,7 @@ class Test_Appliances {
       assert(check == "[]", "The project 'projAppliance' should have been destroyed")             
     }
 
-    @Test
+    //@Test
     def testProjectFalseLink() = {
       val projNodeTest = new GNS3_Manager(returnServerAddress())
       val p = projNodeTest.createProject("projFalseLink")
@@ -147,8 +147,6 @@ class Test_Appliances {
       
       val node_id = JSONApi.parseJSONArray(checkProjectsAPI("/"+proj_id+"/nodes")).getFromArray(0).getFromObject("node_id").value[String]
       val remotePath:String = "/opt/gns3/projects/%s/project-files/docker/%s/etc/network/interfaces".format(proj_id,node_id)
-
-
 
       val cat = SSHApi.cat(remotePath, SSH_Config("148.60.11.201", creds_user, creds_pass))
 
