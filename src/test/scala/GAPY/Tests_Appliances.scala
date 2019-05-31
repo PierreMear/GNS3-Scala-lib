@@ -132,9 +132,10 @@ class Test_Appliances {
       // On recup la config, qui doit être de la forme config_test_ssh.json avec dedans un objet JSON avec les champs user et pass
       val stream = new FileInputStream("./config_test_ssh.json")
       val json_data = try {  Json.parse(stream) } finally { stream.close() }
-
-      println(json_data["user"])
-      val projNodeTest = new GNS3_Manager(returnServerAddress()).enableSSH("148.60.11.201", json_data["user"], json_data["pass"])
+      val creds_user = JSONApi.parseJSONObject(json_data).getFromObject("user")
+      val creds_pass = JSONApi.parseJSONObject(json_data).getFromObject("pass")
+      println(creds_user)
+      val projNodeTest = new GNS3_Manager(returnServerAddress()).enableSSH("148.60.11.201", creds_user, creds_pass)
       val p = projNodeTest.createProject("projConfig")
 
       var check = checkProjectsAPI("")
@@ -149,7 +150,7 @@ class Test_Appliances {
 
 
 
-      val cat = SSHApi.cat(remotePath, SSH_Config("148.60.11.201", json_data["user"], json_data["pass"]))
+      val cat = SSHApi.cat(remotePath, SSH_Config("148.60.11.201", creds_user, creds_pass))
 
       projNodeTest.deleteProject(proj_id) 
       check = checkProjectsAPI("")
