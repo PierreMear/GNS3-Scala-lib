@@ -18,6 +18,8 @@ Download or clone the project then use `mvn -Dmaven.test.skip=true package` to p
 
 ## Usage
 
+You can find a demonstration video [here]( https://youtu.be/kQY_OT2QKTY)
+
 Here is an example on how to use the library in Scala to create a project, add a few nodes and create links between them.
 You will find a Java example [here](https://github.com/PierreMear/GNS3-Scala-lib/blob/master/java-example.md)
 
